@@ -119,6 +119,33 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
     expect(store.evidenceState['EV-001'].discovered).toBe(true);
   });
 
+  it('3b. Species Verification can be revisited after completion without freezing Continue', async () => {
+    const user = userEvent.setup();
+    const firstVisit = render(
+      <MemoryRouter>
+        <SpeciesVerification />
+      </MemoryRouter>
+    );
+
+    for (let step = 1; step <= 5; step += 1) {
+      await user.click(screen.getByRole('button', { name: /Continue/i }));
+    }
+    expect(screen.getByText(/Session Established/i)).toBeInTheDocument();
+    firstVisit.unmount();
+
+    render(
+      <MemoryRouter>
+        <SpeciesVerification />
+      </MemoryRouter>
+    );
+    await user.click(screen.getByRole('button', { name: /Continue/i }));
+    expect(screen.getByText(/Permitted Entrances/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Continue/i }));
+
+    expect(screen.getByText(/How many individuals currently occupy your body/i)).toBeInTheDocument();
+    expect(useGameStore.getState().puzzleState.p00_species_verification.status).toBe('solved');
+  });
+
   it('4. Palinode Home renders HUB-000 and live dispatches with network condition', () => {
     render(
       <MemoryRouter>
@@ -279,6 +306,8 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
     expect(screen.getByText(/\/\/ PALINODE/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Home Feed/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Evidence Board/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /Chapter spine/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Chapter 8: Common Body, locked/i })).toBeInTheDocument();
     expect(screen.getByText(/Chapter 0 \(Canon 0–8\)/i)).toBeInTheDocument();
   });
 });
