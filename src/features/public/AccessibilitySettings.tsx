@@ -85,6 +85,31 @@ export const AccessibilitySettings: React.FC = () => {
         </div>
       </section>
 
+      <section className={styles.section} aria-labelledby="heading-font">
+        <h2 id="heading-font" className={styles.sectionTitle}>Typography Rendering</h2>
+        <div className={styles.controlRow}>
+          <div className={styles.controlLabel}>
+            <span>Interface Font</span>
+            <span className={styles.controlSubtext}>Switch without changing narrative content or layout scale</span>
+          </div>
+          <div className={styles.radioGroup} role="radiogroup" aria-label="Interface Font">
+            {(['palinode', 'device'] as const).map((fontMode) => (
+              <label key={fontMode} className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="font-mode"
+                  value={fontMode}
+                  checked={(settings.fontMode ?? 'palinode') === fontMode}
+                  onChange={() => settings.setFontMode(fontMode)}
+                  aria-label={`Use ${fontMode} font`}
+                />
+                <span>{fontMode === 'palinode' ? 'Palinode' : 'Device'}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Motion & Interaction */}
       <section className={styles.section} aria-labelledby="heading-motion">
         <h2 id="heading-motion" className={styles.sectionTitle}>

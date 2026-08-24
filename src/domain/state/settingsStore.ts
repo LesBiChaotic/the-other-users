@@ -10,6 +10,7 @@ import { SettingsState } from '../types/state';
 
 export const DEFAULT_SETTINGS: SettingsState = {
   theme: 'dark',
+  fontMode: 'palinode',
   textScale: 100,
   reducedMotion: false,
   highContrast: false,
@@ -50,6 +51,7 @@ export function loadInitialSettings(): SettingsState {
 
 export interface SettingsStoreState extends SettingsState {
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
+  setFontMode: (fontMode: 'palinode' | 'device') => void;
   setTextScale: (scale: number) => void;
   setReducedMotion: (reduced: boolean) => void;
   setHighContrast: (highContrast: boolean) => void;
@@ -73,6 +75,7 @@ function syncPreferencesToDOM(settings: SettingsState) {
     activeTheme = prefersDark ? 'dark' : 'light';
   }
   document.documentElement.setAttribute('data-theme', activeTheme);
+  document.documentElement.setAttribute('data-font', settings.fontMode ?? 'palinode');
   try {
     localStorage.setItem('palinode_theme', activeTheme);
   } catch {}
@@ -104,6 +107,11 @@ export const useSettingsStore = create<SettingsStoreState>((set, get) => ({
 
   setTheme: (theme) => {
     set({ theme });
+    syncPreferencesToDOM(get());
+  },
+
+  setFontMode: (fontMode) => {
+    set({ fontMode });
     syncPreferencesToDOM(get());
   },
 

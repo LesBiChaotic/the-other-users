@@ -7,7 +7,11 @@ import { useGameStore } from '../../domain/state/useGameStore';
 
 export const MenagerieRegistry: React.FC = () => {
   const gameState = useGameStore((s) => s.gameState);
-  const isOpsUnlocked = Boolean(gameState.unlockedGates['G5'] || gameState.flags['menagerie_access_method']);
+  const isOpsUnlocked = Boolean(
+    gameState.flags['archive_override'] ||
+    gameState.unlockedGates['G5'] ||
+    gameState.flags['menagerie_access_method']
+  );
 
   return (
     <article className={styles.container}>

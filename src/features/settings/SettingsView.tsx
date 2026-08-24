@@ -18,6 +18,8 @@ export const SettingsView: React.FC = () => {
   const resetChapter = useGameStore((s) => s.resetChapter);
   const resetSurface = useGameStore((s) => s.resetSurface);
   const currentChapter = useGameStore((s) => s.gameState.chapter);
+  const archiveOverride = useGameStore((s) => s.gameState.flags['archive_override'] === true);
+  const setFlag = useGameStore((s) => s.setFlag);
 
   const [confirmFullReset, setConfirmFullReset] = useState(false);
   const [confirmChapterReset, setConfirmChapterReset] = useState(false);
@@ -57,6 +59,42 @@ export const SettingsView: React.FC = () => {
           ))}
         </div>
       </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Typography</h2>
+        <p className={styles.settingDescription}>
+          Palinode preserves the atmospheric serif display. Device mode uses your operating
+          system font for headings and interface text while retaining monospaced signal data.
+        </p>
+        <div className={styles.controlGroup}>
+          <BaseButton
+            variant={(settings.fontMode ?? 'palinode') === 'palinode' ? 'primary' : 'default'}
+            onClick={() => settings.setFontMode('palinode')}
+          >
+            PALINODE FONT
+          </BaseButton>
+          <BaseButton
+            variant={settings.fontMode === 'device' ? 'primary' : 'default'}
+            onClick={() => settings.setFontMode('device')}
+          >
+            DEVICE FONT
+          </BaseButton>
+        </div>
+      </section>
+
+      {archiveOverride && (
+        <section className={styles.overrideSection}>
+          <div>
+            <h2 className={styles.sectionTitle}>Full Archive Access</h2>
+            <p className={styles.settingDescription}>
+              Testing override is active. Routes are open, but puzzles and story choices remain uncommitted.
+            </p>
+          </div>
+          <BaseButton onClick={() => setFlag('archive_override', false)}>
+            Return to Story Locks
+          </BaseButton>
+        </section>
+      )}
 
       {/* Multi-Tier Resets */}
       <section className={styles.dangerSection} aria-labelledby="resets-heading">

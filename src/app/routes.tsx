@@ -69,6 +69,7 @@ export const GuardedRoute: React.FC<GuardedRouteProps> = ({ path, children }) =>
   const store = useGameStore();
   const ctx = selectConditionContext(store);
   const guard = evaluateRouteGuard(path, ctx);
+  const archiveOverride = store.gameState.flags['archive_override'] === true;
 
   if (!store.isHydrated) {
     return (
@@ -78,7 +79,7 @@ export const GuardedRoute: React.FC<GuardedRouteProps> = ({ path, children }) =>
     );
   }
 
-  if (!guard.authorized) {
+  if (!guard.authorized && !archiveOverride) {
     return (
       <main
         style={{

@@ -158,6 +158,7 @@ export class SaveManager {
       inventoryState: snapshot.inventoryState,
       settingsState: {
         theme: 'dark',
+        fontMode: 'palinode',
         textScale: 100,
         reducedMotion: false,
         highContrast: false,

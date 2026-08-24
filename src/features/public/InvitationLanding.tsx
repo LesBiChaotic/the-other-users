@@ -26,6 +26,12 @@ export const InvitationLanding: React.FC = () => {
     navigate('/verify');
   };
 
+  const handleArchiveAccess = () => {
+    setFlag('invitation_accepted', true);
+    setFlag('archive_override', true);
+    navigate('/home');
+  };
+
   return (
     <article className={styles.container}>
       <div className={styles.dispatchRail} aria-hidden="true">
@@ -48,6 +54,10 @@ export const InvitationLanding: React.FC = () => {
         <section className={styles.actionsSection} aria-label="Invitation Responses">
           <BaseButton variant="primary" onClick={handleAccept}>{PUBLIC_INVITATION_CONTENT.actionAccept}</BaseButton>
           <BaseButton onClick={handleDecline}>{PUBLIC_INVITATION_CONTENT.actionDecline}</BaseButton>
+          <button type="button" className={styles.archiveAccess} onClick={handleArchiveAccess}>
+            <span>OPEN FULL ARCHIVE</span>
+            <small>Testing access · story progress remains untouched</small>
+          </button>
           <Link to="/accessibility" className={styles.settingsLink}>{PUBLIC_INVITATION_CONTENT.actionSettings}<span aria-hidden="true">↗</span></Link>
         </section>
       </div>

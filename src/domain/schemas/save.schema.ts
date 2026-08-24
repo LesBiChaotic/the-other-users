@@ -83,6 +83,7 @@ export const InventoryPerItemSchema = z.object({
 
 export const SettingsStateSchema = z.object({
   theme: z.enum(['light', 'dark', 'system']),
+  fontMode: z.enum(['palinode', 'device']).default('palinode'),
   textScale: z.number().min(100).max(200),
   reducedMotion: z.boolean(),
   highContrast: z.boolean(),

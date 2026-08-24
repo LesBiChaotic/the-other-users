@@ -72,6 +72,7 @@ export interface InventoryPerItem {
 
 export interface SettingsState {
   theme: 'light' | 'dark' | 'system';
+  fontMode?: 'palinode' | 'device';
   textScale: number; // 100 to 200 percent
   reducedMotion: boolean;
   highContrast: boolean;

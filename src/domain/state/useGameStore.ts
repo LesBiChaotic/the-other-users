@@ -157,6 +157,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
   },
 
   advanceChapter: (nextChapter, snapshotLabel) => {
+    // Community chapters can be revisited and Chapters 5–6 may be completed in either order.
+    // Treat already-reached chapter requests as idempotent at the UI dispatcher boundary while
+    // preserving the reducer's strict backward-transition invariant for state restoration code.
+    if (nextChapter <= get().gameState.chapter) return;
     const { nextState, event } = advanceChapterReducer(get(), nextChapter);
     if (event) {
       get().eventLog.record(event);
@@ -374,6 +378,7 @@ function triggerAutosave(store: GameStoreState) {
     inventoryState: store.inventoryState,
     settingsState: {
       theme: settings.theme,
+      fontMode: settings.fontMode ?? 'palinode',
       textScale: settings.textScale,
       reducedMotion: settings.reducedMotion,
       highContrast: settings.highContrast,

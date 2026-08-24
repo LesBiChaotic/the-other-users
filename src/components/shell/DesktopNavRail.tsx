@@ -24,6 +24,7 @@ const CHAPTERS = [
 export const DesktopNavRail: React.FC = () => {
   const chapter = useGameStore((s) => s.gameState.chapter);
   const unlockedGates = useGameStore((s) => s.gameState.unlockedGates);
+  const archiveOverride = useGameStore((s) => s.gameState.flags['archive_override'] === true);
   const handle = useGameStore((s) => s.playerProfile.handle);
 
   return (
@@ -116,7 +117,7 @@ export const DesktopNavRail: React.FC = () => {
         <ol className={styles.chapterList}>
           {CHAPTERS.map((item) => {
             const isCurrent = chapter === item.number;
-            const isUnlocked = Boolean(unlockedGates[item.gate]);
+            const isUnlocked = archiveOverride || Boolean(unlockedGates[item.gate]);
             return (
               <li key={item.number} className={styles.chapterItem}>
                 <NavLink
@@ -139,6 +140,9 @@ export const DesktopNavRail: React.FC = () => {
       </nav>
 
       <div className={styles.footer}>
+        {archiveOverride && (
+          <div className={styles.overrideIndicator}>ARCHIVE OVERRIDE ACTIVE</div>
+        )}
         <div className={styles.statusIndicator}>
           <strong>SESSION:</strong> {handle}
         </div>

@@ -24,6 +24,7 @@ import { MobileBottomNav } from '../components/shell/MobileBottomNav';
 import { NavigationDrawer } from '../components/shell/NavigationDrawer';
 import { DesktopNavRail } from '../components/shell/DesktopNavRail';
 import { AppHeader } from '../components/shell/AppHeader';
+import { GuardedRoute } from '../app/routes';
 
 const LocationProbe = () => <span data-testid="location-probe">{useLocation().pathname}</span>;
 
@@ -49,6 +50,30 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
     expect(screen.getByText(/Your account has been approved/i)).toBeInTheDocument();
     expect(screen.getByText(/This service will not request your legal name/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Accept Inconclusive Classification/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Open Full Archive/i })).toBeInTheDocument();
+  });
+
+  it('1b. Full Archive Access opens guarded routes without solving story puzzles', async () => {
+    const user = userEvent.setup();
+    const landing = render(
+      <MemoryRouter>
+        <InvitationLanding />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole('button', { name: /Open Full Archive/i }));
+    expect(useGameStore.getState().gameState.flags.archive_override).toBe(true);
+    expect(useGameStore.getState().puzzleState).toEqual({});
+    landing.unmount();
+
+    render(
+      <MemoryRouter>
+        <GuardedRoute path="/convergence">
+          <div>Archive route visible</div>
+        </GuardedRoute>
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Archive route visible')).toBeInTheDocument();
   });
 
   it('2. Accessibility Settings renders controls and updates store/DOM', async () => {
@@ -72,6 +97,11 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
     await user.click(lightRadio);
     expect(useSettingsStore.getState().theme).toBe('light');
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+
+    const deviceFont = screen.getByLabelText(/Use device font/i);
+    await user.click(deviceFont);
+    expect(useSettingsStore.getState().fontMode).toBe('device');
+    expect(document.documentElement.getAttribute('data-font')).toBe('device');
   });
 
   it('2b. Public header theme toggle never navigates into the hub', async () => {
@@ -163,6 +193,14 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
 
     expect(screen.getByText(/How many individuals currently occupy your body/i)).toBeInTheDocument();
     expect(useGameStore.getState().puzzleState.p00_species_verification.status).toBe('solved');
+  });
+
+  it('3c. Revisiting an earlier or parallel chapter cannot regress or crash progression', () => {
+    const store = useGameStore.getState();
+    store.advanceChapter(6);
+
+    expect(() => useGameStore.getState().advanceChapter(5)).not.toThrow();
+    expect(useGameStore.getState().gameState.chapter).toBe(6);
   });
 
   it('4. Palinode Home renders HUB-000 and live dispatches with network condition', () => {

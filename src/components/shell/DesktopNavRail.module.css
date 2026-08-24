@@ -223,3 +223,12 @@
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
+.overrideIndicator {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--accent-warning);
+  color: var(--accent-warning);
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  letter-spacing: .08em;
+}
