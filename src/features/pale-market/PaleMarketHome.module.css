@@ -1,0 +1,91 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--line-emphasis);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-permission);
+  text-transform: uppercase;
+}
+
+.bannerListing {
+  background-color: var(--bg-paper);
+  border: 2px solid var(--accent-permission);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.bannerListing:hover {
+  border-color: var(--accent-network);
+}
+
+.marketLedger {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.listingRow {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.listingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.listingTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.permanenceBadge {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-4);
+  color: var(--text-muted);
+}
+
+.priceTag {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--accent-warning);
+}
+
+.provenanceNote {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}

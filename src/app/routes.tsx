@@ -37,6 +37,17 @@ import { FiveOfUsThread } from '../features/moltinghouse/FiveOfUsThread';
 import { BelowlineMap } from '../features/belowline/BelowlineMap';
 import { ManifestLedger } from '../features/belowline/ManifestLedger';
 
+// Checkpoint 4: Vesper, Pale Market & Communion Wave Two
+import { VesperHome } from '../features/vesper/VesperHome';
+import { RoomToneCase } from '../features/vesper/RoomToneCase';
+import { AgreementViewer } from '../features/vesper/AgreementViewer';
+import { PaleMarketHome } from '../features/pale-market/PaleMarketHome';
+import { IdentityAssembly } from '../features/pale-market/IdentityAssembly';
+import { MemoryRemoval } from '../features/pale-market/MemoryRemoval';
+import { CommunionStream } from '../features/communion/CommunionStream';
+import { TestimonyArchive } from '../features/communion/TestimonyArchive';
+import { LitanyConcordance } from '../features/communion/LitanyConcordance';
+
 export interface GuardedRouteProps {
   path: string;
   children: React.ReactNode;
@@ -104,6 +115,15 @@ const SURFACE_COMPONENTS: Record<string, React.ReactNode> = {
   '/molt/thread/five-of-us': <FiveOfUsThread />,
   '/below': <BelowlineMap />,
   '/below/manifests': <ManifestLedger />,
+  '/vesper': <VesperHome />,
+  '/vesper/profile/room-tone': <RoomToneCase />,
+  '/vesper/agreements/body-sharing': <AgreementViewer />,
+  '/market': <PaleMarketHome />,
+  '/market/listing/access-identity': <IdentityAssembly />,
+  '/market/listing/unremember-me': <MemoryRemoval />,
+  '/communion': <CommunionStream />,
+  '/communion/testimonies': <TestimonyArchive />,
+  '/communion/litany': <LitanyConcordance />,
 };
 
 export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {

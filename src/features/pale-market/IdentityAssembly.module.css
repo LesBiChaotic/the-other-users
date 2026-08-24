@@ -1,0 +1,66 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--accent-permission);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-permission);
+  text-transform: uppercase;
+}
+
+.meterCard {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: ui-monospace, monospace;
+}
+
+.componentGroup {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.componentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.optionLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  min-height: var(--touch-target-min);
+}
+
+.optionLabel input {
+  margin-top: 4px;
+  accent-color: var(--accent-permission);
+}
