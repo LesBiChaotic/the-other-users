@@ -5,7 +5,7 @@
  * TermsMayApply's predatory circular exception.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './AgreementViewer.module.css';
 import { BODY_SHARING_CLAUSES_P09 } from '../../content/fixtures/vesperContent';
@@ -27,10 +27,6 @@ export const AgreementViewer: React.FC = () => {
   const puzzleState = useGameStore((s) => s.puzzleState);
 
   const isSolved = Boolean(puzzleState['p09_body_sharing_agreement']?.status === 'solved' || gameState.flags['p09_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-010', 'Vesper Safety Template Archive');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -60,8 +56,11 @@ export const AgreementViewer: React.FC = () => {
       );
       setFlag('p09_solved', true);
       setFlag('terms_exposed', true);
-      unlockGate('G4'); // Unlocks Pale Market & Communion
-      advanceChapter(4);
+      discoverEvidence('EV-010', 'Vesper Safety Template Archive');
+      if (useGameStore.getState().gameState.flags['p08_solved']) {
+        unlockGate('G4');
+        advanceChapter(4);
+      }
     } else {
       ensurePuzzleActive('p09_body_sharing_agreement');
       setPuzzleStatus(
@@ -77,8 +76,11 @@ export const AgreementViewer: React.FC = () => {
     ensurePuzzleActive('p09_body_sharing_agreement');
     setPuzzleStatus('p09_body_sharing_agreement', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p09_solved', true);
-    unlockGate('G4');
-    advanceChapter(4);
+    discoverEvidence('EV-010', 'Assisted Vesper Safety Template Archive');
+    if (useGameStore.getState().gameState.flags['p08_solved']) {
+      unlockGate('G4');
+      advanceChapter(4);
+    }
   };
 
   const handleReset = () => {

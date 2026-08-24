@@ -5,7 +5,7 @@
  * without accidentally creating a living Recordborn claimant.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './IdentityAssembly.module.css';
 import { IDENTITY_COMPONENTS_P10 } from '../../content/fixtures/paleMarketContent';
@@ -32,10 +32,6 @@ export const IdentityAssembly: React.FC = () => {
 
   const isSolved = Boolean(puzzleState['p10_identity_without_body']?.status === 'solved' || gameState.flags['p10_solved']);
   const isClaimantCreated = gameState.flags['recordborn_created'] === true;
-
-  useEffect(() => {
-    discoverEvidence('EV-011', 'Pale Market Identity Assembly Workbench');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -74,6 +70,7 @@ export const IdentityAssembly: React.FC = () => {
       setFlag('p10_solved', true);
       setFlag('recordborn_created', false);
       setFlag('menagerie_access_method', 'action_pass');
+      discoverEvidence('EV-011', 'Pale Market Identity Assembly Workbench');
       advanceChapter(5);
     } else {
       // CLAIMANT CREATED ROUTE (Allowed story branch, creates Recordborn NPC)
@@ -86,6 +83,7 @@ export const IdentityAssembly: React.FC = () => {
       setFlag('p10_solved', true);
       setFlag('recordborn_created', true);
       setFlag('menagerie_access_method', 'recordborn_proxy');
+      discoverEvidence('EV-011', 'Pale Market claimant creation record');
       advanceChapter(5);
     }
   };
@@ -94,6 +92,7 @@ export const IdentityAssembly: React.FC = () => {
     ensurePuzzleActive('p10_identity_without_body');
     setPuzzleStatus('p10_identity_without_body', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p10_solved', true);
+    discoverEvidence('EV-011', 'Assisted Pale Market Identity Assembly');
     advanceChapter(5);
   };
 

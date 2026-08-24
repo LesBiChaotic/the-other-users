@@ -6,6 +6,19 @@ import { BaseButton } from '../../components/primitives/BaseButton';
 import { useGameStore } from '../../domain/state/useGameStore';
 
 export const CommunionStream: React.FC = () => {
+  const gameState = useGameStore((s) => s.gameState);
+  const setFlag = useGameStore((s) => s.setFlag);
+  const unlockGate = useGameStore((s) => s.unlockGate);
+  const advanceChapter = useGameStore((s) => s.advanceChapter);
+  const readyForStance = Boolean(gameState.flags['p12_solved'] && gameState.flags['p13_solved']);
+  const stance = gameState.flags['communion_stance'];
+
+  const commitStance = (choice: 'join' | 'infiltrate' | 'oppose') => {
+    setFlag('communion_stance', choice);
+    unlockGate('G5');
+    advanceChapter(6);
+  };
+
   return (
     <article className={styles.container}>
       <header className={styles.header}>
@@ -48,6 +61,22 @@ export const CommunionStream: React.FC = () => {
             and quarantine it through living contradiction.
           </p>
         </Link>
+      </section>
+
+      <section className={styles.sermonCard} aria-labelledby="communion-stance-title">
+        <h2 id="communion-stance-title" className="type-h2">Your Position Before the Shared Form</h2>
+        <p className="type-body">
+          Communion contains voluntary members who received real relief and a replication system that erases refusal. Evidence can distinguish them; it cannot make this choice for you.
+        </p>
+        {!readyForStance && <p className="type-small">Complete both the Testimony Archive and Litany Concordance before committing a position.</p>}
+        {readyForStance && !stance && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginTop: 'var(--space-3)' }}>
+            <BaseButton onClick={() => commitStance('join')}>Join Communion Voluntarily</BaseButton>
+            <BaseButton variant="primary" onClick={() => commitStance('infiltrate')}>Enter as an Infiltrator</BaseButton>
+            <BaseButton variant="danger" onClick={() => commitStance('oppose')}>Publicly Oppose Communion</BaseButton>
+          </div>
+        )}
+        {stance && <p className="type-body"><strong>Position recorded:</strong> {String(stance).toUpperCase()}. Gate G5 is open; this choice will follow you into Menagerie.</p>}
       </section>
 
       {/* Sermons and Teachings */}

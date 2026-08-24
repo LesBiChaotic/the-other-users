@@ -5,7 +5,7 @@
  * Common Body replication artifacts without declaring all faith counterfeit.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './TestimonyArchive.module.css';
 import { COMMUNION_TESTIMONIES_P12 } from '../../content/fixtures/communionContent';
@@ -27,10 +27,6 @@ export const TestimonyArchive: React.FC = () => {
   const puzzleState = useGameStore((s) => s.puzzleState);
 
   const isSolved = Boolean(puzzleState['p12_testimony_without_diagnosis']?.status === 'solved' || gameState.flags['p12_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-013', 'Communion Testimony Archive');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -65,6 +61,7 @@ export const TestimonyArchive: React.FC = () => {
         'Accurately differentiated sincere faith from synthetic replication.'
       );
       setFlag('p12_solved', true);
+      discoverEvidence('EV-013', 'Communion Testimony Archive');
       changeRelationship('usr_cal', 10);
       advanceChapter(6);
     } else {
@@ -82,6 +79,7 @@ export const TestimonyArchive: React.FC = () => {
     ensurePuzzleActive('p12_testimony_without_diagnosis');
     setPuzzleStatus('p12_testimony_without_diagnosis', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p12_solved', true);
+    discoverEvidence('EV-013', 'Assisted Communion Testimony Archive');
     advanceChapter(6);
   };
 

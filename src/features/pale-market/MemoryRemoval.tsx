@@ -5,7 +5,7 @@
  * removing the Common Body's predictive model of the player.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './MemoryRemoval.module.css';
 import { BaseButton } from '../../components/primitives/BaseButton';
@@ -26,10 +26,6 @@ export const MemoryRemoval: React.FC = () => {
   const puzzleState = useGameStore((s) => s.puzzleState);
 
   const isSolved = Boolean(puzzleState['p11_neighboring_memory']?.status === 'solved' || gameState.flags['p11_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-012', 'unremember_me Memory Removal Exchange');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -56,6 +52,7 @@ export const MemoryRemoval: React.FC = () => {
       setFlag('p11_solved', true);
       setFlag('archive_escrow', true);
       setFlag('player_model_weakened', true);
+      discoverEvidence('EV-012', 'unremember_me Archivore escrow receipt');
       changeRelationship('usr_unr', 10);
       advanceChapter(5);
     } else if (route === 'sacrifice') {
@@ -69,6 +66,7 @@ export const MemoryRemoval: React.FC = () => {
       setFlag('p11_solved', true);
       setFlag('bond_sacrificed', true);
       setFlag('player_model_weakened', true);
+      discoverEvidence('EV-012', 'unremember_me severance receipt');
       changeRelationship('usr_nvr', -15);
       advanceChapter(5);
     } else {
@@ -81,6 +79,7 @@ export const MemoryRemoval: React.FC = () => {
       );
       setFlag('p11_solved', true);
       setFlag('memory_prune_refused', true);
+      discoverEvidence('EV-012', 'unremember_me refusal ledger');
       advanceChapter(5);
     }
   };
@@ -89,6 +88,7 @@ export const MemoryRemoval: React.FC = () => {
     ensurePuzzleActive('p11_neighboring_memory');
     setPuzzleStatus('p11_neighboring_memory', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p11_solved', true);
+    discoverEvidence('EV-012', 'Assisted unremember_me exchange');
     advanceChapter(5);
   };
 

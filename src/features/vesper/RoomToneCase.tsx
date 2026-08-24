@@ -5,7 +5,7 @@
  * Identifies Date C as a Communion collection event masquerading as a perfect match.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './RoomToneCase.module.css';
 import { BaseButton } from '../../components/primitives/BaseButton';
@@ -80,10 +80,6 @@ export const RoomToneCase: React.FC = () => {
 
   const isSolved = Boolean(puzzleState['p08_compatibility_not_sameness']?.status === 'solved' || gameState.flags['p08_solved']);
 
-  useEffect(() => {
-    discoverEvidence('EV-009', 'Vesper Compatibility Registry');
-  }, [discoverEvidence]);
-
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
     if (status === 'unseen') {
@@ -107,7 +103,8 @@ export const RoomToneCase: React.FC = () => {
         'Identified Date C as predatory collection disguised as universal compatibility.'
       );
       setFlag('p08_solved', true);
-      advanceChapter(4);
+      discoverEvidence('EV-009', 'Vesper Compatibility Registry');
+      if (useGameStore.getState().gameState.flags['p09_solved']) advanceChapter(4);
     } else {
       ensurePuzzleActive('p08_compatibility_not_sameness');
       setPuzzleStatus(
@@ -123,7 +120,8 @@ export const RoomToneCase: React.FC = () => {
     ensurePuzzleActive('p08_compatibility_not_sameness');
     setPuzzleStatus('p08_compatibility_not_sameness', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p08_solved', true);
-    advanceChapter(4);
+    discoverEvidence('EV-009', 'Assisted Vesper Compatibility Registry');
+    if (useGameStore.getState().gameState.flags['p09_solved']) advanceChapter(4);
   };
 
   const handleReset = () => {

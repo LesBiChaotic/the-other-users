@@ -5,7 +5,7 @@
  * it through living contradiction rather than martyrdom deletion.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './LitanyConcordance.module.css';
 import { LITANY_REVISIONS_P13 } from '../../content/fixtures/communionContent';
@@ -18,8 +18,6 @@ export const LitanyConcordance: React.FC = () => {
 
   const setPuzzleStatus = useGameStore((s) => s.setPuzzleStatus);
   const discoverEvidence = useGameStore((s) => s.discoverEvidence);
-  const unlockGate = useGameStore((s) => s.unlockGate);
-  const advanceChapter = useGameStore((s) => s.advanceChapter);
   const setFlag = useGameStore((s) => s.setFlag);
   const resetPuzzle = useGameStore((s) => s.resetPuzzle);
 
@@ -27,10 +25,6 @@ export const LitanyConcordance: React.FC = () => {
   const puzzleState = useGameStore((s) => s.puzzleState);
 
   const isSolved = Boolean(puzzleState['p13_litany_of_one_shape']?.status === 'solved' || gameState.flags['p13_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-014', 'Communion Concordance Ledger');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -58,8 +52,7 @@ export const LitanyConcordance: React.FC = () => {
       );
       setFlag('p13_solved', true);
       setFlag('litany_quarantined', true);
-      unlockGate('G5'); // Unlocks Menagerie Operations Login
-      advanceChapter(6);
+      discoverEvidence('EV-014', 'Communion Concordance Ledger');
     } else if (isTargetLine && actionType === 'delete') {
       // DELETION / MARTYRDOM ROUTE
       setPuzzleStatus(
@@ -70,8 +63,7 @@ export const LitanyConcordance: React.FC = () => {
       );
       setFlag('p13_solved', true);
       setFlag('litany_deleted', true);
-      unlockGate('G5');
-      advanceChapter(6);
+      discoverEvidence('EV-014', 'Communion martyr-distribution ledger');
     } else {
       setPuzzleStatus(
         'p13_litany_of_one_shape',
@@ -86,8 +78,7 @@ export const LitanyConcordance: React.FC = () => {
     ensurePuzzleActive('p13_litany_of_one_shape');
     setPuzzleStatus('p13_litany_of_one_shape', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p13_solved', true);
-    unlockGate('G5');
-    advanceChapter(6);
+    discoverEvidence('EV-014', 'Assisted Communion Concordance Ledger');
   };
 
   const handleReset = () => {
@@ -130,10 +121,10 @@ export const LitanyConcordance: React.FC = () => {
       {isSolved && (
         <div style={{ padding: 'var(--space-3)', backgroundColor: 'var(--bg-paper)', border: '1px solid var(--accent-permission)', borderRadius: 'var(--radius-4)' }}>
           <h2 className="type-h3" style={{ color: 'var(--accent-permission)' }}>
-            ✓ Replication Litany Quarantined & Gate G5 Unsealed
+            ✓ Replication Litany Isolated — Communion Stance Required
           </h2>
           <p className="type-body" style={{ marginTop: 'var(--space-1)' }}>
-            Interface homogenization slowed. Evidence <strong>EV-014</strong> recorded. Menagerie Operations access unlocked.
+            Interface homogenization slowed. Evidence <strong>EV-014</strong> recorded. Return to Communion and decide how you will approach its living members.
           </p>
         </div>
       )}

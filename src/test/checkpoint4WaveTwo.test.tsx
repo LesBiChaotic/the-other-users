@@ -86,6 +86,7 @@ describe('Checkpoint 4 Vesper, Pale Market & Communion Wave Two', () => {
 
   it('3. P09 Body-Sharing Agreement restores 5 safe clauses and unlocks G4', async () => {
     const user = userEvent.setup();
+    useGameStore.getState().setFlag('p08_solved', true);
     render(
       <MemoryRouter>
         <AgreementViewer />
@@ -210,9 +211,10 @@ describe('Checkpoint 4 Vesper, Pale Market & Communion Wave Two', () => {
     expect(screen.getByText(/Testimony Analysis Verified/i)).toBeInTheDocument();
   });
 
-  it('9. P13 Litany Concordance quarantines Line 3 and unlocks G5', async () => {
+  it('9. P13 isolates Line 3; Communion stance then unlocks G5', async () => {
     const user = userEvent.setup();
-    render(
+    useGameStore.getState().setFlag('p12_solved', true);
+    const { unmount } = render(
       <MemoryRouter>
         <LitanyConcordance />
       </MemoryRouter>
@@ -229,11 +231,17 @@ describe('Checkpoint 4 Vesper, Pale Market & Communion Wave Two', () => {
     await user.click(quarantineBtn);
 
     const store = useGameStore.getState();
-    expect(store.gameState.unlockedGates['G5']).toBe(true);
+    expect(store.gameState.unlockedGates['G5']).not.toBe(true);
     expect(store.puzzleState['p13_litany_of_one_shape'].status).toBe('solved');
     expect(store.gameState.flags['litany_quarantined']).toBe(true);
     expect(store.evidenceState['EV-014'].discovered).toBe(true);
-    expect(screen.getByText(/Replication Litany Quarantined & Gate G5 Unsealed/i)).toBeInTheDocument();
+    expect(screen.getByText(/Replication Litany Isolated/i)).toBeInTheDocument();
+
+    unmount();
+    render(<MemoryRouter><CommunionStream /></MemoryRouter>);
+    await user.click(screen.getByRole('button', { name: /Enter as an Infiltrator/i }));
+    expect(useGameStore.getState().gameState.flags['communion_stance']).toBe('infiltrate');
+    expect(useGameStore.getState().gameState.unlockedGates['G5']).toBe(true);
   });
 
   it('10. 360 px responsive rendering across Vesper, Pale Market, and Communion', () => {
