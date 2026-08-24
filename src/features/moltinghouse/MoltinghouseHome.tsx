@@ -1,16 +1,60 @@
-/**
- * Moltinghouse Community Home — The Other Users
- * 
- * Layered revision-based forum displaying mimicry support, host negotiation,
- * and entry points to soft_error's shed drafts and FIVE_OF_US plural timeline.
- */
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './MoltinghouseHome.module.css';
 import { MOLTINGHOUSE_THREADS } from '../../content/fixtures/moltinghouseContent';
+import { BaseButton } from '../../components/primitives/BaseButton';
+import { useGameStore } from '../../domain/state/useGameStore';
 
 export const MoltinghouseHome: React.FC = () => {
+  const [expandedThreadId, setExpandedThreadId] = useState<string | null>(null);
+  const [quizAnswers, setQuizAnswers] = useState<{ q1?: string; q2?: string; q3?: string }>({});
+  const [quizFeedback, setQuizFeedback] = useState<string | null>(null);
+
+  const gameState = useGameStore((s) => s.gameState);
+  const puzzleState = useGameStore((s) => s.puzzleState);
+  const setPuzzleStatus = useGameStore((s) => s.setPuzzleStatus);
+  const setFlag = useGameStore((s) => s.setFlag);
+  const updateProfile = useGameStore((s) => s.updateProfile);
+  const changeReputation = useGameStore((s) => s.changeReputation);
+
+  const isO02Solved = Boolean(puzzleState['o02_moltinghouse_quiz']?.status === 'solved' || gameState.flags['o02_solved']);
+
+  const toggleExpand = (threadId: string) => {
+    setExpandedThreadId((prev) => (prev === threadId ? null : threadId));
+  };
+
+  const handleAnswerQuiz = (qKey: 'q1' | 'q2' | 'q3', ans: string) => {
+    setQuizAnswers((prev) => ({ ...prev, [qKey]: ans }));
+  };
+
+  const ensurePuzzleActive = (puzzleId: string) => {
+    const status = useGameStore.getState().puzzleState[puzzleId]?.status ?? 'unseen';
+    if (status === 'unseen') {
+      setPuzzleStatus(puzzleId, 'introduced');
+      setPuzzleStatus(puzzleId, 'active');
+    } else if (status === 'introduced') {
+      setPuzzleStatus(puzzleId, 'active');
+    }
+  };
+
+  const submitQuiz = () => {
+    const isCorrect =
+      quizAnswers.q1 === 'q1_reset' &&
+      quizAnswers.q2 === 'q2_history' &&
+      quizAnswers.q3 === 'q3_commas';
+
+    if (isCorrect) {
+      ensurePuzzleActive('o02_moltinghouse_quiz');
+      setPuzzleStatus('o02_moltinghouse_quiz', 'solved', { answers: quizAnswers }, 'Passed Moltinghouse Etiquette Quiz.');
+      setFlag('o02_solved', true);
+      updateProfile({ provisionalSpecies: 'DOMESTIC WITNESS (CONTOUR-AWARE)' });
+      changeReputation('plurality_accord', 10);
+      setQuizFeedback('✓ Quiz passed! Awarded "Contour-Aware" cosmetic profile molt and +10 Plurality trust.');
+    } else {
+      setQuizFeedback('Incorrect answer(s). Remember: ethics respects history, not cosmetic uniformity.');
+    }
+  };
+
   return (
     <article className={styles.container}>
       <header className={styles.header}>
@@ -57,25 +101,150 @@ export const MoltinghouseHome: React.FC = () => {
           Community Advice & Contour Etiquette
         </h2>
 
-        {MOLTINGHOUSE_THREADS.map((thread) => (
-          <div key={thread.id} className={styles.threadLayer}>
-            <div className={styles.layerHeader}>
-              <span className={styles.authorMeta}>
-                @{thread.authorHandle} ({thread.authorSpecies})
-              </span>
-              <span className={styles.revisionPill}>{thread.revisionCount} revisions</span>
-            </div>
+        {MOLTINGHOUSE_THREADS.map((thread) => {
+          const isExpanded = expandedThreadId === thread.id;
+          const isQuizThread = thread.id === 'MOLT-009';
 
-            <h3 className={styles.threadTitle}>{thread.title}</h3>
-            <p className={styles.threadBody}>{thread.body}</p>
+          return (
+            <div key={thread.id} className={styles.threadLayer}>
+              <div className={styles.layerHeader}>
+                <span className={styles.authorMeta}>
+                  @{thread.authorHandle} ({thread.authorSpecies || thread.category})
+                </span>
+                <span className={styles.revisionPill}>{thread.revisionCount} revisions</span>
+              </div>
 
-            <div style={{ marginTop: 'var(--space-2)' }}>
-              <span className="type-small" style={{ color: 'var(--text-muted)' }}>
-                {thread.comments.length} annotations attached
-              </span>
+              <h3 className={styles.threadTitle}>{thread.title}</h3>
+              <p className={styles.threadBody}>{thread.body}</p>
+
+              {/* O02 Quiz Interactive Workbench */}
+              {isQuizThread && (
+                <div style={{ marginTop: 'var(--space-3)', padding: 'var(--space-3)', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                  <h4 className="type-h3" style={{ color: 'var(--accent-permission)' }}>
+                    O02 Ethics Quiz Questionnaire
+                  </h4>
+
+                  {/* Q1 */}
+                  <div>
+                    <p className="type-small" style={{ fontWeight: 700 }}>
+                      1. How should facial fatigue during learned customer service mimicry be managed?
+                    </p>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q1"
+                        checked={quizAnswers.q1 === 'q1_staple'}
+                        onChange={() => handleAnswerQuiz('q1', 'q1_staple')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Staple the hinge and increase smile wattage.
+                    </label>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q1"
+                        checked={quizAnswers.q1 === 'q1_reset'}
+                        onChange={() => handleAnswerQuiz('q1', 'q1_reset')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Request speech-only duties or schedule a private muscle reset.
+                    </label>
+                  </div>
+
+                  {/* Q2 */}
+                  <div>
+                    <p className="type-small" style={{ fontWeight: 700 }}>
+                      2. Why are "spontaneity tests" considered discriminatory against suspected replacements?
+                    </p>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q2"
+                        checked={quizAnswers.q2 === 'q2_history'}
+                        onChange={() => handleAnswerQuiz('q2', 'q2_history')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Because "natural" is subjective; authentic identity requires comparison to private history.
+                    </label>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q2"
+                        checked={quizAnswers.q2 === 'q2_speed'}
+                        onChange={() => handleAnswerQuiz('q2', 'q2_speed')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Because mimics should always respond within 50 milliseconds.
+                    </label>
+                  </div>
+
+                  {/* Q3 */}
+                  <div>
+                    <p className="type-small" style={{ fontWeight: 700 }}>
+                      3. What linguistic habit indicates authentic soft_error presence?
+                    </p>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q3"
+                        checked={quizAnswers.q3 === 'q3_commas'}
+                        onChange={() => handleAnswerQuiz('q3', 'q3_commas')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Double commas when worried and unresolved private grievances.
+                    </label>
+                    <label style={{ display: 'block', marginTop: '4px' }}>
+                      <input
+                        type="radio"
+                        name="q3"
+                        checked={quizAnswers.q3 === 'q3_perfect'}
+                        onChange={() => handleAnswerQuiz('q3', 'q3_perfect')}
+                        disabled={isO02Solved}
+                      />{' '}
+                      Flawlessly polite, generic grammar with no complaints.
+                    </label>
+                  </div>
+
+                  {quizFeedback && (
+                    <p className="type-small" style={{ color: isO02Solved ? 'var(--accent-permission)' : 'var(--accent-warning)', fontWeight: 700 }}>
+                      {quizFeedback}
+                    </p>
+                  )}
+
+                  {!isO02Solved && (
+                    <div>
+                      <BaseButton variant="primary" onClick={submitQuiz}>
+                        Submit Quiz Answers
+                      </BaseButton>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Thread Comments Toggle */}
+              <div style={{ marginTop: 'var(--space-2)' }}>
+                <BaseButton onClick={() => toggleExpand(thread.id)}>
+                  {isExpanded ? 'Hide Annotations' : `View Annotations (${thread.comments.length})`}
+                </BaseButton>
+              </div>
+
+              {isExpanded && (
+                <div style={{ marginTop: 'var(--space-3)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', borderTop: '1px solid var(--line-subtle)', paddingTop: 'var(--space-2)' }}>
+                  {thread.comments.map((comm) => (
+                    <div key={comm.id} style={{ padding: 'var(--space-2)', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-4)' }}>
+                      <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-network)' }}>
+                        @{comm.authorHandle}:
+                      </span>
+                      <p className="type-small" style={{ marginTop: '2px' }}>
+                        {comm.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
     </article>
   );

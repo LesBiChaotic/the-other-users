@@ -48,7 +48,7 @@ describe('Checkpoint 3 Moltinghouse & Belowline Wave One', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { name: /Moltinghouse/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Moltinghouse', level: 1 })).toBeInTheDocument();
     expect(screen.getByText(/soft_error Shed Drafts & Revision Layers/i)).toBeInTheDocument();
     expect(screen.getByText(/FIVE_OF_US: One Moderator, Several Bodies/i)).toBeInTheDocument();
     expect(screen.getByText(/My Host’s Dog Knows\. What Now\?/i)).toBeInTheDocument();
