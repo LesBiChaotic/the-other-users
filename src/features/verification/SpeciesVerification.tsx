@@ -122,10 +122,14 @@ export const SpeciesVerification: React.FC = () => {
 
   return (
     <article className={styles.container}>
-      <header>
-        <span className={styles.stepIndicator}>
-          VERIFICATION STEP {currentStep} OF {totalSteps}
-        </span>
+      <header className={styles.protocolHeader}>
+        <div className={styles.protocolMeta}>
+          <span className={styles.stepIndicator}>VERIFICATION STEP {currentStep} OF {totalSteps}</span>
+          <span className={styles.stepCount}>BODY DECLARATION / {String(currentStep).padStart(2, '0')}</span>
+        </div>
+        <div className={styles.progressTrack} aria-hidden="true">
+          <i style={{ width: `${(currentStep / totalSteps) * 100}%` }} />
+        </div>
       </header>
 
       {/* STEP 1: Account Notice */}
