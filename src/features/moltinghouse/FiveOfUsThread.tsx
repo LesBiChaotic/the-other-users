@@ -5,7 +5,7 @@
  * ideological division vs external account replacement.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './FiveOfUsThread.module.css';
 import { FIVE_OF_US_VOICES_P05 } from '../../content/fixtures/moltinghouseContent';
@@ -22,6 +22,8 @@ export const FiveOfUsThread: React.FC = () => {
   const setFlag = useGameStore((s) => s.setFlag);
   const changeRelationship = useGameStore((s) => s.changeRelationship);
   const resetPuzzle = useGameStore((s) => s.resetPuzzle);
+  const unlockGate = useGameStore((s) => s.unlockGate);
+  const advanceChapter = useGameStore((s) => s.advanceChapter);
 
   const gameState = useGameStore((s) => s.gameState);
   const puzzleState = useGameStore((s) => s.puzzleState);
@@ -29,10 +31,6 @@ export const FiveOfUsThread: React.FC = () => {
 
   const isSolved = Boolean(puzzleState['p05_plural_bodies']?.status === 'solved' || gameState.flags['p05_solved']);
   const isFalseReport = gameState.flags['p05_false_report'] === true;
-
-  useEffect(() => {
-    discoverEvidence('EV-006', 'Belowline Annex N Repair Log');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -56,7 +54,13 @@ export const FiveOfUsThread: React.FC = () => {
       );
       setFlag('p05_solved', true);
       setFlag('p05_false_report', false);
+      discoverEvidence('EV-006', 'Belowline Annex N Repair Log');
       changeRelationship('usr_fiv', 15);
+
+      if (useGameStore.getState().gameState.flags['p04_solved']) {
+        unlockGate('G2');
+        advanceChapter(2);
+      }
 
       updateProfile({
         pluralityScore: (playerProfile.pluralityScore || 15) + 15,
@@ -89,6 +93,11 @@ export const FiveOfUsThread: React.FC = () => {
     ensurePuzzleActive('p05_plural_bodies');
     setPuzzleStatus('p05_plural_bodies', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p05_solved', true);
+    discoverEvidence('EV-006', 'Assisted Belowline Annex N Repair Log');
+    if (useGameStore.getState().gameState.flags['p04_solved']) {
+      unlockGate('G2');
+      advanceChapter(2);
+    }
   };
 
   const handleReset = () => {
@@ -139,6 +148,7 @@ export const FiveOfUsThread: React.FC = () => {
           </h2>
           <p className="type-body" style={{ marginTop: 'var(--space-1)' }}>
             Plurality score increased (+15%). FIVE_OF_US remains an ally in later repair procedures.
+            {gameState.flags['p04_solved'] ? ' Both Chapter 2 investigations are complete; Belowline is open.' : ' soft_error’s revision archive must still be resolved before Belowline opens.'}
           </p>
         </div>
       )}

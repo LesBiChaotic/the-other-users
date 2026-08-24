@@ -6,7 +6,7 @@
  * and discovery of Annex N (Gate G3).
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './ManifestLedger.module.css';
 import {
@@ -44,11 +44,6 @@ export const ManifestLedger: React.FC = () => {
   const isP06Solved = Boolean(puzzleState['p06_belowline_route']?.status === 'solved' || gameState.flags['p06_solved']);
   const isP07Solved = Boolean(puzzleState['p07_forged_silence']?.status === 'solved' || gameState.flags['p07_solved']);
 
-  useEffect(() => {
-    discoverEvidence('EV-007', 'Belowline Pressure Audit');
-    discoverEvidence('EV-008', 'underplatform_9 Belowline Audit Log');
-  }, [discoverEvidence]);
-
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
     if (status === 'unseen') {
@@ -83,6 +78,7 @@ export const ManifestLedger: React.FC = () => {
       setFlag('p06_solved', true);
       setRouteSharedFaction(shareWith);
       setFlag('p06_route_shared_with', shareWith);
+      discoverEvidence('EV-007', 'Belowline Pressure Audit');
     } else {
       ensurePuzzleActive('p06_belowline_route');
       setPuzzleStatus(
@@ -96,6 +92,7 @@ export const ManifestLedger: React.FC = () => {
 
   // P07 Verification: Identify Manifest 44 as the forged record
   const handleAuditManifest = (manifestId: string) => {
+    if (!isP06Solved) return;
     setSelectedManifestId(manifestId);
 
     if (manifestId === 'man_44') {
@@ -107,6 +104,7 @@ export const ManifestLedger: React.FC = () => {
         'Identified synthetic clean zero in Manifest 44.'
       );
       setFlag('p07_solved', true);
+      discoverEvidence('EV-008', 'underplatform_9 Belowline Audit Log');
       changeRelationship('usr_und', 10);
       unlockGate('G3'); // Opens Vesper & Menagerie public registry
       advanceChapter(3);
@@ -128,6 +126,8 @@ export const ManifestLedger: React.FC = () => {
     setPuzzleStatus('p07_forged_silence', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p06_solved', true);
     setFlag('p07_solved', true);
+    discoverEvidence('EV-007', 'Assisted Belowline Pressure Audit');
+    discoverEvidence('EV-008', 'Assisted underplatform_9 Belowline Audit Log');
     unlockGate('G3');
     advanceChapter(3);
   };
@@ -195,8 +195,9 @@ export const ManifestLedger: React.FC = () => {
           type="button"
           className={`${styles.tabButton} ${activeTab === 'p07_manifests' ? styles.tabButtonActive : ''}`}
           onClick={() => setActiveTab('p07_manifests')}
+          disabled={!isP06Solved}
         >
-          2. Forged Silence Audit (P07)
+          2. Forged Silence Audit (P07){!isP06Solved ? ' — LOCKED' : ''}
         </button>
       </nav>
 

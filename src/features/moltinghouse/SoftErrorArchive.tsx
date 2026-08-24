@@ -5,7 +5,7 @@
  * punctuation tell (,,), obsolete nickname ("stapler king"), and rivet debt.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './SoftErrorArchive.module.css';
 import { SOFT_ERROR_DRAFTS_P04 } from '../../content/fixtures/moltinghouseContent';
@@ -27,10 +27,6 @@ export const SoftErrorArchive: React.FC = () => {
   const gameState = useGameStore((s) => s.gameState);
   const puzzleState = useGameStore((s) => s.puzzleState);
   const isSolved = Boolean(puzzleState['p04_shed_drafts']?.status === 'solved' || gameState.flags['p04_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-005', 'Moltinghouse Revision Archive');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -64,8 +60,11 @@ export const SoftErrorArchive: React.FC = () => {
         'Recovered soft_error authentic signature across drafts 2, 5, and 7.'
       );
       setFlag('p04_solved', true);
-      unlockGate('G2'); // Opens Belowline transport lead
-      advanceChapter(2);
+      discoverEvidence('EV-005', 'Moltinghouse Revision Archive');
+      if (useGameStore.getState().gameState.flags['p05_solved']) {
+        unlockGate('G2');
+        advanceChapter(2);
+      }
     } else {
       ensurePuzzleActive('p04_shed_drafts');
       setPuzzleStatus(
@@ -82,8 +81,11 @@ export const SoftErrorArchive: React.FC = () => {
     ensurePuzzleActive('p04_shed_drafts');
     setPuzzleStatus('p04_shed_drafts', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p04_solved', true);
-    unlockGate('G2');
-    advanceChapter(2);
+    discoverEvidence('EV-005', 'Assisted Moltinghouse Revision Archive');
+    if (useGameStore.getState().gameState.flags['p05_solved']) {
+      unlockGate('G2');
+      advanceChapter(2);
+    }
   };
 
   const handleReset = () => {
@@ -131,7 +133,9 @@ export const SoftErrorArchive: React.FC = () => {
             ✓ soft_error Signature Recovered (Drafts 2, 5, 7)
           </h2>
           <p className="type-body" style={{ marginTop: 'var(--space-1)' }}>
-            Gate <strong>G2</strong> unsealed. Belowline transit records are now accessible.
+            {gameState.flags['p05_solved']
+              ? <>Gate <strong>G2</strong> unsealed. Belowline transit records are now accessible.</>
+              : <>Continuity recovered. Chapter 2 remains open until FIVE_OF_US is treated as a person rather than a suspicious account.</>}
           </p>
         </div>
       )}

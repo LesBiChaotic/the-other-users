@@ -55,7 +55,7 @@ describe('Checkpoint 3 Moltinghouse & Belowline Wave One', () => {
     expect(screen.getByText(/Jaw Keeps Reverting During Customer Service/i)).toBeInTheDocument();
   });
 
-  it('2. P04 Shed Drafts recovers authentic signature (Drafts 2, 5, 7) and unlocks G2', async () => {
+  it('2. P04 Shed Drafts recovers authentic signature but keeps G2 closed until P05', async () => {
     const user = userEvent.setup();
     render(
       <MemoryRouter>
@@ -85,8 +85,8 @@ describe('Checkpoint 3 Moltinghouse & Belowline Wave One', () => {
 
     // State Assertions
     const store = useGameStore.getState();
-    expect(store.gameState.unlockedGates['G2']).toBe(true);
-    expect(store.gameState.chapter).toBe(2);
+    expect(store.gameState.unlockedGates['G2']).not.toBe(true);
+    expect(store.gameState.chapter).toBe(1);
     expect(store.puzzleState['p04_shed_drafts'].status).toBe('solved');
     expect(store.evidenceState['EV-005'].discovered).toBe(true);
     expect(screen.getByText(/soft_error Signature Recovered/i)).toBeInTheDocument();
@@ -118,6 +118,43 @@ describe('Checkpoint 3 Moltinghouse & Belowline Wave One', () => {
     expect(store.playerProfile.pluralityScore).toBe(30); // 15 + 15
     expect(store.evidenceState['EV-006'].discovered).toBe(true);
     expect(screen.getByText(/Plural Personhood Affirmed/i)).toBeInTheDocument();
+  });
+
+  it('3b. Chapter 2 opens Belowline only after both investigations are complete', async () => {
+    const user = userEvent.setup();
+    useGameStore.getState().setFlag('p04_solved', true);
+
+    render(
+      <MemoryRouter>
+        <FiveOfUsThread />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole('button', { name: /Request Internal Consent Protocol/i }));
+
+    const store = useGameStore.getState();
+    expect(store.gameState.unlockedGates['G2']).toBe(true);
+    expect(store.gameState.chapter).toBe(2);
+  });
+
+  it('3c. Moltinghouse investigations require three ordinary threads first', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <MoltinghouseHome />
+      </MemoryRouter>
+    );
+
+    const archiveLink = screen.getByRole('link', { name: /Investigate soft_error Shed Drafts/i });
+    expect(archiveLink).toHaveAttribute('aria-disabled', 'true');
+
+    const annotationButtons = screen.getAllByRole('button', { name: /View Annotations/i });
+    await user.click(annotationButtons[0]);
+    await user.click(annotationButtons[1]);
+    await user.click(annotationButtons[2]);
+
+    expect(useGameStore.getState().gameState.flags['molt_threads_viewed_count']).toBe(3);
+    expect(archiveLink).toHaveAttribute('aria-disabled', 'false');
   });
 
   it('4. P05 False Report penalizes plural trust', async () => {
@@ -194,6 +231,7 @@ describe('Checkpoint 3 Moltinghouse & Belowline Wave One', () => {
 
   it('7. P07 Forged Silence Audit identifies Manifest 44 synthetic zero and unlocks G3 (Annex N)', async () => {
     const user = userEvent.setup();
+    useGameStore.getState().setFlag('p06_solved', true);
     render(
       <MemoryRouter>
         <ManifestLedger />

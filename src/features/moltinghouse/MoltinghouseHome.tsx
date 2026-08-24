@@ -18,9 +18,17 @@ export const MoltinghouseHome: React.FC = () => {
   const changeReputation = useGameStore((s) => s.changeReputation);
 
   const isO02Solved = Boolean(puzzleState['o02_moltinghouse_quiz']?.status === 'solved' || gameState.flags['o02_solved']);
+  const ordinaryThreadsRead = Number(gameState.flags['molt_threads_viewed_count'] || 0);
+  const investigationsUnlocked = ordinaryThreadsRead >= 3;
 
   const toggleExpand = (threadId: string) => {
     setExpandedThreadId((prev) => (prev === threadId ? null : threadId));
+    if (expandedThreadId !== threadId && threadId !== 'MOLT-009' && !gameState.flags[`molt_seen_${threadId}`]) {
+      const nextCount = ordinaryThreadsRead + 1;
+      setFlag(`molt_seen_${threadId}`, true);
+      setFlag('molt_threads_viewed_count', nextCount);
+      if (nextCount >= 3) setFlag('molt_investigations_unlocked', true);
+    }
   };
 
   const handleAnswerQuiz = (qKey: 'q1' | 'q2' | 'q3', ans: string) => {
@@ -66,12 +74,36 @@ export const MoltinghouseHome: React.FC = () => {
         </p>
       </header>
 
+      <section className={styles.threadLayer} aria-label="Chapter continuity notice">
+        <span className={styles.bannerKicker}>CHAPTER 1 CONSEQUENCE // THE ARGUMENT AUNTIE TRIED TO CLEAN</span>
+        <h2 className="type-h3">Moltinghouse remembers how you handled a stranger.</h2>
+        <p className="type-body">
+          {gameState.flags['accused_wrong_user']
+            ? 'Your accusation reached the revision sheds before you did. Members have hidden private contours and will not accept certainty without relational proof.'
+            : gameState.flags['repaired_apology']
+              ? 'Your public correction was mirrored here with its edits intact. Members are cautious, but they recognize a witness willing to preserve being wrong.'
+              : gameState.flags['case_01_deferred']
+                ? 'Witness Wire records that you refused to accuse without enough evidence. Moltinghouse has granted read-only access while it decides whether caution is care.'
+                : 'The recovered moderation link points here: an argument was edited into a clean ending that neither participant remembers choosing.'}
+        </p>
+      </section>
+
       {/* Primary Investigation Banners */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+        {!investigationsUnlocked && (
+          <div className={styles.threadLayer} role="status">
+            <span className={styles.bannerKicker}>COMMUNITY CONTEXT REQUIRED // {ordinaryThreadsRead}/3 THREADS READ</span>
+            <p className="type-body">
+              Read three ordinary discussions and their annotations first. A continuity signature is a relationship, not a spelling test.
+            </p>
+          </div>
+        )}
         <Link
           to="/molt/sheds/soft_error"
           className={styles.bannerInvestigation}
           aria-label="Investigate soft_error Shed Drafts"
+          aria-disabled={!investigationsUnlocked}
+          onClick={(event) => { if (!investigationsUnlocked) event.preventDefault(); }}
         >
           <span className={styles.bannerKicker}>★ P04 INVESTIGATION // SHED ARCHIVE</span>
           <h2 className="type-h2">soft_error Shed Drafts & Revision Layers</h2>
@@ -85,6 +117,8 @@ export const MoltinghouseHome: React.FC = () => {
           to="/molt/thread/five-of-us"
           className={styles.bannerInvestigation}
           aria-label="Investigate FIVE_OF_US Plural Timeline"
+          aria-disabled={!investigationsUnlocked}
+          onClick={(event) => { if (!investigationsUnlocked) event.preventDefault(); }}
         >
           <span className={styles.bannerKicker}>★ P05 INVESTIGATION // PLURAL TIMELINE</span>
           <h2 className="type-h2">FIVE_OF_US: One Moderator, Several Bodies</h2>
