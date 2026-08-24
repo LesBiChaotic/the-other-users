@@ -1,0 +1,134 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--line-emphasis);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-network);
+  text-transform: uppercase;
+}
+
+.tabBar {
+  display: flex;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--line-subtle);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.tabButton {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: var(--touch-target-min);
+}
+
+.tabButtonActive {
+  color: var(--accent-network);
+  border-bottom-color: var(--accent-network);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.instruction {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.diagramCard {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.diagramHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.rotationControl {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.manifestList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.manifestItem {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.manifestItemForged {
+  border-color: var(--accent-warning);
+}
+
+.manifestHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.manifestMetaGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  background-color: var(--bg-surface);
+  padding: var(--space-2);
+  border-radius: var(--radius-4);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 480px) {
+  .manifestMetaGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

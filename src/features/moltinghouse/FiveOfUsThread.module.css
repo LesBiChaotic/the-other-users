@@ -1,0 +1,108 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--accent-permission);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-permission);
+  text-transform: uppercase;
+}
+
+.voiceFilterBar {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.filterButton {
+  padding: 4px var(--space-2);
+  font-size: 0.8rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.filterButtonActive {
+  background-color: var(--bg-paper);
+  border-color: var(--accent-network);
+  color: var(--accent-network);
+  font-weight: 700;
+}
+
+.transcriptList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.transcriptItem {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-left: 3px solid var(--accent-network);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.transcriptItemSingular {
+  border-left-color: var(--accent-warning);
+}
+
+.voiceMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.unitName {
+  font-weight: 700;
+  color: var(--accent-network);
+}
+
+.voiceBody {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.telemetryTag {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--accent-permission);
+  margin-top: 2px;
+}
+
+.decisionBox {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-emphasis);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

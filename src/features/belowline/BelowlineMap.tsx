@@ -1,0 +1,107 @@
+/**
+ * Belowline Pressure Map View — The Other Users
+ * 
+ * Subterranean structural topology with zoom controls and an equivalent
+ * synchronized semantic station list for accessibility.
+ */
+
+import React, { useState } from 'react';
+import { Link } from 'react-router';
+import styles from './BelowlineMap.module.css';
+import { BELOWLINE_STATIONS } from '../../content/fixtures/belowlineContent';
+import { BaseButton } from '../../components/primitives/BaseButton';
+
+export const BelowlineMap: React.FC = () => {
+  const [zoomLevel, setZoomLevel] = useState<number>(100);
+
+  const handleZoomIn = () => setZoomLevel((z) => Math.min(z + 20, 180));
+  const handleZoomOut = () => setZoomLevel((z) => Math.max(z - 20, 60));
+
+  return (
+    <article className={styles.container}>
+      <header className={styles.header}>
+        <span className={styles.kicker}>UNDERFOLK TRANSIT UNION // PRESSURE TOPOLOGY</span>
+        <h1 className="type-h1">Belowline Subterranean Grid</h1>
+        <p className="type-body" style={{ color: 'var(--text-muted)' }}>
+          Cities experienced as continuous stress fields. Topology is organized by material
+          continuity, passing weight, and structural echo rather than compass north.
+        </p>
+      </header>
+
+      {/* Manifest Ledger Investigation Banner */}
+      <Link
+        to="/below/manifests"
+        className={styles.bannerManifests}
+        aria-label="Open Belowline Manifest Ledger"
+      >
+        <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-warning)', fontWeight: 700 }}>
+          ★ P06 / P07 INVESTIGATION // MANIFEST LEDGER
+        </span>
+        <h2 className="type-h2">Continuous Manifest Ledger & Acoustic Audit</h2>
+        <p className="type-body">
+          Align pressure diagrams to uncover the Annex N conduit (P06) and audit Manifest 44
+          for synthetic silence anomalies (P07).
+        </p>
+      </Link>
+
+      {/* Interactive Topology Map Canvas */}
+      <section className={styles.mapCanvasContainer} aria-labelledby="map-title">
+        <div className={styles.mapControls}>
+          <h2 id="map-title" className="type-h3" style={{ color: '#E0F2F1' }}>
+            Pressure Vector Visualizer ({zoomLevel}%)
+          </h2>
+
+          <div className={styles.zoomButtons}>
+            <BaseButton onClick={handleZoomOut} aria-label="Zoom Out Map">
+              − Zoom Out
+            </BaseButton>
+            <BaseButton onClick={handleZoomIn} aria-label="Zoom In Map">
+              + Zoom In
+            </BaseButton>
+          </div>
+        </div>
+
+        <div
+          className={styles.mapVisual}
+          style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'center center' }}
+          role="img"
+          aria-label="Pressure topology diagram showing load vectors connecting surface sectors to Platform V-Null"
+        >
+          <p><strong>[SUBTERRANEAN BEDROCK PRESSURE MATRIX]</strong></p>
+          <p>LOAD CONTINUITY: 1,200mm CAST IRON CONDUIT</p>
+          <p>TERMINUS: PLATFORM V-NULL ➔ ANNEX N SPUR (DEPTH: 145m)</p>
+        </div>
+      </section>
+
+      {/* Synchronized Semantic Station List */}
+      <section aria-labelledby="stations-title">
+        <h2 id="stations-title" className="type-h3">
+          Synchronized Station & Conduit Register
+        </h2>
+
+        <ul className={styles.stationList} aria-label="Belowline Stations">
+          {BELOWLINE_STATIONS.map((station) => (
+            <li
+              key={station.id}
+              className={`${styles.stationItem} ${
+                station.isDeletedStation ? styles.stationItemDeleted : ''
+              }`}
+            >
+              <div className={styles.stationHeader}>
+                <h3 className={styles.stationName}>{station.name}</h3>
+                <span className={styles.stationDepth}>Depth: {station.depthMeters}m</span>
+              </div>
+
+              <p className="type-small">
+                <strong>Structural Material:</strong> {station.structuralCondition}
+              </p>
+              <p className="type-small" style={{ color: 'var(--text-muted)' }}>
+                Passing Weight: {station.passingWeightTonsDaily} tons/day
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </article>
+  );
+};

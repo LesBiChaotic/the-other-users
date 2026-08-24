@@ -43,6 +43,7 @@ export const PlayerObservationCase: React.FC = () => {
   const resetPuzzle = useGameStore((s) => s.resetPuzzle);
 
   const gameState = useGameStore((s) => s.gameState);
+  const puzzleState = useGameStore((s) => s.puzzleState);
 
   const isCaseResolved = Boolean(gameState.unlockedGates['G1'] || gameState.flags['case_01_resolved']);
   const isWrongAccusation = gameState.flags['accused_wrong_user'] === true;
@@ -57,7 +58,7 @@ export const PlayerObservationCase: React.FC = () => {
 
   // Helper to ensure a puzzle is active before applying terminal state
   const ensurePuzzleActive = (puzzleId: string) => {
-    const status = gameState.puzzleState?.[puzzleId]?.status ?? 'unseen';
+    const status = puzzleState[puzzleId]?.status ?? 'unseen';
     if (status === 'unseen') {
       setPuzzleStatus(puzzleId, 'introduced');
       setPuzzleStatus(puzzleId, 'active');

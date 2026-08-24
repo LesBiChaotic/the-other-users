@@ -1,0 +1,117 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--line-emphasis);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-network);
+  text-transform: uppercase;
+}
+
+.bannerManifests {
+  background-color: var(--bg-paper);
+  border: 2px solid var(--line-emphasis);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.bannerManifests:hover {
+  border-color: var(--accent-network);
+}
+
+.mapCanvasContainer {
+  background-color: #080C0D;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  color: #B2DFDB;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+}
+
+.mapControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zoomButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.mapVisual {
+  height: 200px;
+  border: 1px dashed rgba(120, 187, 179, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-3);
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}
+
+.stationList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stationItem {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stationItemDeleted {
+  border-style: dashed;
+  border-color: var(--accent-warning);
+}
+
+.stationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.stationName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stationDepth {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--accent-permission);
+}

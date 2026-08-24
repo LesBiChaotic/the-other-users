@@ -30,6 +30,13 @@ import { WitnessThreadDetail } from '../features/witness-wire/WitnessThreadDetai
 import { WitnessUserProfile } from '../features/witness-wire/WitnessUserProfile';
 import { PlayerObservationCase } from '../features/witness-wire/PlayerObservationCase';
 
+// Checkpoint 3: Moltinghouse & Belowline Wave One
+import { MoltinghouseHome } from '../features/moltinghouse/MoltinghouseHome';
+import { SoftErrorArchive } from '../features/moltinghouse/SoftErrorArchive';
+import { FiveOfUsThread } from '../features/moltinghouse/FiveOfUsThread';
+import { BelowlineMap } from '../features/belowline/BelowlineMap';
+import { ManifestLedger } from '../features/belowline/ManifestLedger';
+
 export interface GuardedRouteProps {
   path: string;
   children: React.ReactNode;
@@ -92,6 +99,11 @@ const SURFACE_COMPONENTS: Record<string, React.ReactNode> = {
   '/settings': <SettingsView />,
   '/wire': <WitnessWireHome />,
   '/wire/case/player': <PlayerObservationCase />,
+  '/molt': <MoltinghouseHome />,
+  '/molt/sheds/soft_error': <SoftErrorArchive />,
+  '/molt/thread/five-of-us': <FiveOfUsThread />,
+  '/below': <BelowlineMap />,
+  '/below/manifests': <ManifestLedger />,
 };
 
 export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {
