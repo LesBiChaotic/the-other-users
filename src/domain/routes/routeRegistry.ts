@@ -97,13 +97,8 @@ export const ROUTE_REGISTRY: Record<string, RouteMetadata> = {
     path: '/wire/case/player',
     surfaceName: 'Player Observation Case',
     chapterRequirement: 0,
-    unlockCondition: {
-      type: 'all',
-      conditions: [
-        { type: 'gateReached', gateId: 'G0' },
-        { type: 'flagEquals', flag: 'wire_intro_threshold_met', value: true },
-      ],
-    },
+    gateId: 'G0',
+    unlockCondition: { type: 'gateReached', gateId: 'G0' },
     fallbackPath: '/wire',
     deniedMessage: 'Case dossier restricted: Insufficient observation baseline.',
   },

@@ -77,10 +77,12 @@ export function executePuzzleReset(
   currentState: RootState,
   puzzleId: string
 ): ResetResult {
-  const current = currentState.puzzleState[puzzleId];
-  if (!current) {
-    throw new Error(`Puzzle "${puzzleId}" not found in current puzzle state.`);
-  }
+  const current = currentState.puzzleState[puzzleId] ?? {
+    status: 'unseen',
+    attempts: 0,
+    hintLevel: 0,
+    bypassed: false,
+  };
 
   const nextState: RootState = {
     ...currentState,

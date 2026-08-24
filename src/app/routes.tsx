@@ -13,7 +13,7 @@ import { BaseButton } from '../components/primitives/BaseButton';
 import { NetworkNotice } from '../components/primitives/NetworkNotice';
 import { GlobalShell } from '../components/shell/GlobalShell';
 
-// Checkpoint 1 Feature Surfaces
+// Checkpoint 1 & 2 Feature Surfaces
 import { InvitationLanding } from '../features/public/InvitationLanding';
 import { AccessibilitySettings } from '../features/public/AccessibilitySettings';
 import { SpeciesVerification } from '../features/verification/SpeciesVerification';
@@ -23,6 +23,12 @@ import { EvidenceBoard } from '../features/evidence/EvidenceBoard';
 import { PlayerProfileView } from '../features/profile/PlayerProfileView';
 import { CommunityDirectory } from '../features/communities/CommunityDirectory';
 import { SettingsView } from '../features/settings/SettingsView';
+
+// Checkpoint 2: Witness Wire Vertical Slice
+import { WitnessWireHome } from '../features/witness-wire/WitnessWireHome';
+import { WitnessThreadDetail } from '../features/witness-wire/WitnessThreadDetail';
+import { WitnessUserProfile } from '../features/witness-wire/WitnessUserProfile';
+import { PlayerObservationCase } from '../features/witness-wire/PlayerObservationCase';
 
 export interface GuardedRouteProps {
   path: string;
@@ -84,6 +90,8 @@ const SURFACE_COMPONENTS: Record<string, React.ReactNode> = {
   '/profile': <PlayerProfileView />,
   '/communities': <CommunityDirectory />,
   '/settings': <SettingsView />,
+  '/wire': <WitnessWireHome />,
+  '/wire/case/player': <PlayerObservationCase />,
 };
 
 export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {
@@ -104,6 +112,29 @@ export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {
       </GlobalShell>
     ),
   };
+});
+
+// Dynamic parameterized routes
+routes.push({
+  path: 'wire/thread/:id',
+  element: (
+    <GlobalShell>
+      <GuardedRoute path="/wire">
+        <WitnessThreadDetail />
+      </GuardedRoute>
+    </GlobalShell>
+  ),
+});
+
+routes.push({
+  path: 'wire/user/:handle',
+  element: (
+    <GlobalShell>
+      <GuardedRoute path="/wire">
+        <WitnessUserProfile />
+      </GuardedRoute>
+    </GlobalShell>
+  ),
 });
 
 // Fallback route
