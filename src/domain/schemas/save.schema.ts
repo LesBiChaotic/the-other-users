@@ -100,6 +100,17 @@ export const UIStateSchema = z.object({
   scrollRestoration: z.record(z.number()).default({}),
 });
 
+export const NarrativeStateSchema = z.object({
+  choices: z.record(z.string()).default({}),
+  completedChapterIds: z.array(z.string()).default([]),
+  commonBodyCapabilities: z.array(z.string()).default([]),
+  messageState: z.record(z.object({
+    delivered: z.boolean(),
+    read: z.boolean(),
+    replyId: z.string().optional(),
+  })).default({}),
+});
+
 export const CheckpointSnapshotSchema = z.object({
   id: z.string().min(1),
   chapter: z.number().int().min(0).max(8),
@@ -112,6 +123,7 @@ export const CheckpointSnapshotSchema = z.object({
   reputationState: z.record(FactionIdSchema, z.number()),
   evidenceState: z.record(EvidencePerItemSchema),
   inventoryState: z.record(InventoryPerItemSchema),
+  narrativeState: NarrativeStateSchema,
 });
 
 export const SaveEnvelopeSchema = z.object({
@@ -127,6 +139,7 @@ export const SaveEnvelopeSchema = z.object({
   reputationState: z.record(FactionIdSchema, z.number()),
   evidenceState: z.record(EvidencePerItemSchema),
   inventoryState: z.record(InventoryPerItemSchema),
+  narrativeState: NarrativeStateSchema,
   settingsState: SettingsStateSchema,
   uiState: UIStateSchema.optional(),
   eventHistory: z.array(z.any()), // GameEvent array validated dynamically

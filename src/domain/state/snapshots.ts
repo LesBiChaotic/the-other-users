@@ -23,6 +23,7 @@ export function createCheckpointSnapshot(
     reputationState: JSON.parse(JSON.stringify(state.reputationState)),
     evidenceState: JSON.parse(JSON.stringify(state.evidenceState)),
     inventoryState: JSON.parse(JSON.stringify(state.inventoryState)),
+    narrativeState: JSON.parse(JSON.stringify(state.narrativeState)),
   };
 }
 
@@ -39,5 +40,6 @@ export function restoreCheckpointSnapshot(
     reputationState: JSON.parse(JSON.stringify(snapshot.reputationState)),
     evidenceState: JSON.parse(JSON.stringify(snapshot.evidenceState)),
     inventoryState: JSON.parse(JSON.stringify(snapshot.inventoryState)),
+    narrativeState: JSON.parse(JSON.stringify(snapshot.narrativeState)),
   };
 }

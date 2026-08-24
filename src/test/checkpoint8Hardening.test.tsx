@@ -237,6 +237,12 @@ describe('Checkpoint 8: Master QA & Final Acceptance Hardening', () => {
         'EV-001': { discovered: true, inspected: true, marked: false, compared: false, committedToCases: [] },
       },
       inventoryState: {},
+      narrativeState: {
+        choices: {},
+        completedChapterIds: [],
+        commonBodyCapabilities: [],
+        messageState: {},
+      },
       settingsState: {
         theme: 'dark',
         textScale: 100,

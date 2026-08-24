@@ -36,6 +36,7 @@ import {
 import { saveManager } from '../persistence/saveManager';
 import { CURRENT_SCHEMA_VERSION } from '../persistence/migrations';
 import { useSettingsStore } from './settingsStore';
+import { commitNarrativeChoiceReducer, setMessageStateReducer } from '../narrative/consequenceEngine';
 
 export interface GameStoreState extends RootState {
   playthroughId: string;
@@ -61,6 +62,8 @@ export interface GameStoreState extends RootState {
   changeReputation: (factionId: FactionId, deltaScore: number) => void;
   acquireItem: (itemId: string, permanence: 'permanent' | 'consumed_on_use' | 'escrowed', provenance: string) => void;
   commitEnding: (endingId: string, terms: Record<string, unknown>) => void;
+  commitNarrativeChoice: (choiceId: string, optionId: string) => void;
+  setMessageState: (messageId: string, action: 'deliver' | 'read' | 'reply', replyId?: string) => void;
 
   // UI ephemeral actions
   setNavigationDrawerOpen: (open: boolean) => void;
@@ -107,6 +110,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
           reputationState: env.reputationState,
           evidenceState: env.evidenceState,
           inventoryState: env.inventoryState,
+          narrativeState: env.narrativeState,
           snapshots: env.snapshots || [],
           eventLog: new EventLog(env.eventHistory || []),
           uiState: env.uiState || {
@@ -282,6 +286,24 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
     }
   },
 
+  commitNarrativeChoice: (choiceId, optionId) => {
+    const { nextState, events } = commitNarrativeChoiceReducer(get(), choiceId, optionId);
+    if (events.length > 0) {
+      events.forEach((event) => get().eventLog.record(event));
+      set({ ...nextState, updatedAt: Date.now() });
+      triggerAutosave(get());
+    }
+  },
+
+  setMessageState: (messageId, action, replyId) => {
+    const { nextState, event } = setMessageStateReducer(get(), messageId, action, replyId);
+    if (event) {
+      get().eventLog.record(event);
+      set({ ...nextState, updatedAt: Date.now() });
+      triggerAutosave(get());
+    }
+  },
+
   setNavigationDrawerOpen: (open) => {
     set((state) => ({
       uiState: {
@@ -376,6 +398,7 @@ function triggerAutosave(store: GameStoreState) {
     reputationState: store.reputationState,
     evidenceState: store.evidenceState,
     inventoryState: store.inventoryState,
+    narrativeState: store.narrativeState,
     settingsState: {
       theme: settings.theme,
       fontMode: settings.fontMode ?? 'palinode',

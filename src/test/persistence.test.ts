@@ -34,6 +34,7 @@ describe('IndexedDB Persistence, Migration & Recovery', () => {
       reputationState: state.reputationState,
       evidenceState: state.evidenceState,
       inventoryState: state.inventoryState,
+      narrativeState: state.narrativeState,
       settingsState: {
         theme: 'dark',
         textScale: 120,

@@ -7,13 +7,29 @@
 import { SaveEnvelope } from '../types/state';
 import { SaveEnvelopeSchema } from '../schemas/save.schema';
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
 export type MigrationStep = (rawSave: any) => any;
 
 export const MIGRATION_CHAIN: Record<number, MigrationStep> = {
-  // Example future migrations:
-  // 1: (v0) => migrateV0ToV1(v0),
+  1: (v1) => ({
+    ...v1,
+    narrativeState: v1.narrativeState ?? {
+      choices: {},
+      completedChapterIds: [],
+      commonBodyCapabilities: [],
+      messageState: {},
+    },
+    snapshots: (v1.snapshots ?? []).map((snapshot: any) => ({
+      ...snapshot,
+      narrativeState: snapshot.narrativeState ?? {
+        choices: {},
+        completedChapterIds: [],
+        commonBodyCapabilities: [],
+        messageState: {},
+      },
+    })),
+  }),
 };
 
 export interface MigrationResult {
@@ -59,6 +75,26 @@ export function migrateSaveEnvelope(rawSave: any): MigrationResult {
         scrollRestoration: {},
       };
     }
+
+    // Narrative state became first-class in v2. Apply this recovery guard even to
+    // very early saves that skipped explicit historical migration steps.
+    if (!working.narrativeState || typeof working.narrativeState !== 'object') {
+      working.narrativeState = {
+        choices: {},
+        completedChapterIds: [],
+        commonBodyCapabilities: [],
+        messageState: {},
+      };
+    }
+    working.snapshots = (working.snapshots ?? []).map((snapshot: any) => ({
+      ...snapshot,
+      narrativeState: snapshot.narrativeState ?? {
+        choices: {},
+        completedChapterIds: [],
+        commonBodyCapabilities: [],
+        messageState: {},
+      },
+    }));
 
     // Validate through Zod
     const parsed = SaveEnvelopeSchema.safeParse(working);

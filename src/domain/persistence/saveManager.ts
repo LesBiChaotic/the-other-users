@@ -156,6 +156,7 @@ export class SaveManager {
       reputationState: snapshot.reputationState,
       evidenceState: snapshot.evidenceState,
       inventoryState: snapshot.inventoryState,
+      narrativeState: snapshot.narrativeState,
       settingsState: {
         theme: 'dark',
         fontMode: 'palinode',

@@ -89,6 +89,19 @@ export interface UIState {
   scrollRestoration: Record<string, number>;
 }
 
+export interface MessagePerState {
+  delivered: boolean;
+  read: boolean;
+  replyId?: string;
+}
+
+export interface NarrativeState {
+  choices: Record<string, string>;
+  completedChapterIds: string[];
+  commonBodyCapabilities: string[];
+  messageState: Record<string, MessagePerState>;
+}
+
 export interface CheckpointSnapshot {
   id: string;
   chapter: number;
@@ -101,6 +114,7 @@ export interface CheckpointSnapshot {
   reputationState: Record<FactionId, number>;
   evidenceState: Record<string, EvidencePerItem>;
   inventoryState: Record<string, InventoryPerItem>;
+  narrativeState: NarrativeState;
 }
 
 export interface SaveEnvelope {
@@ -116,6 +130,7 @@ export interface SaveEnvelope {
   reputationState: Record<FactionId, number>;
   evidenceState: Record<string, EvidencePerItem>;
   inventoryState: Record<string, InventoryPerItem>;
+  narrativeState: NarrativeState;
   settingsState: SettingsState;
   uiState?: UIState;
   eventHistory: GameEvent[];

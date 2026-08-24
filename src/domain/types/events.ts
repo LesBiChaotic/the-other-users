@@ -73,6 +73,14 @@ export type GameEvent =
       payload: { factionId: string; oldScore: number; newScore: number };
     })
   | (BaseGameEvent & {
+      type: 'NARRATIVE_CHOICE_COMMITTED';
+      payload: { choiceId: string; optionId: string; priorOptionId?: string };
+    })
+  | (BaseGameEvent & {
+      type: 'COMMON_BODY_LEARNED';
+      payload: { capability: string; sourceChoiceId?: string };
+    })
+  | (BaseGameEvent & {
       type: 'MESSAGE_DELIVERED';
       payload: { messageId: string; threadId: string; senderSource: 'authentic_ilyr' | 'common_body_imitator' | 'permission_error' | 'user' | 'faction' };
     })

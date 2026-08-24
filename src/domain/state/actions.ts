@@ -13,6 +13,7 @@ import {
   RelationshipPerUser,
   EvidencePerItem,
   InventoryPerItem,
+  NarrativeState,
   UserOutcome,
 } from '../types/state';
 import { FactionId } from '../types/content';
@@ -28,6 +29,7 @@ export interface RootState {
   reputationState: Record<FactionId, number>;
   evidenceState: Record<string, EvidencePerItem>;
   inventoryState: Record<string, InventoryPerItem>;
+  narrativeState: NarrativeState;
   seenEndingIds: string[];
 }
 
@@ -67,6 +69,12 @@ export function createInitialRootState(): RootState {
     },
     evidenceState: {},
     inventoryState: {},
+    narrativeState: {
+      choices: {},
+      completedChapterIds: [],
+      commonBodyCapabilities: [],
+      messageState: {},
+    },
     seenEndingIds: [],
   };
 }
