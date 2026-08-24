@@ -5,7 +5,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, useLocation } from 'react-router';
 import { saveManager } from '../domain/persistence/saveManager';
 import { useGameStore } from '../domain/state/useGameStore';
 import { useSettingsStore } from '../domain/state/settingsStore';
@@ -23,6 +23,9 @@ import { SettingsView } from '../features/settings/SettingsView';
 import { MobileBottomNav } from '../components/shell/MobileBottomNav';
 import { NavigationDrawer } from '../components/shell/NavigationDrawer';
 import { DesktopNavRail } from '../components/shell/DesktopNavRail';
+import { AppHeader } from '../components/shell/AppHeader';
+
+const LocationProbe = () => <span data-testid="location-probe">{useLocation().pathname}</span>;
 
 describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
   beforeEach(async () => {
@@ -69,6 +72,22 @@ describe('Checkpoint 1 Global Shell & Hub Surfaces', () => {
     await user.click(lightRadio);
     expect(useSettingsStore.getState().theme).toBe('light');
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  });
+
+  it('2b. Public header theme toggle never navigates into the hub', async () => {
+    const user = userEvent.setup();
+    useSettingsStore.getState().setTheme('dark');
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <AppHeader />
+        <LocationProbe />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole('button', { name: /Toggle theme/i }));
+
+    expect(screen.getByTestId('location-probe')).toHaveTextContent('/');
+    expect(useSettingsStore.getState().theme).toBe('light');
   });
 
   it('3. Species Verification executes P00 & P01 and synthesizes Domestic Witness profile', async () => {
