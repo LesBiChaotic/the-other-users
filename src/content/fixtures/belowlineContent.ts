@@ -190,6 +190,44 @@ export const BELOWLINE_EVIDENCE: EvidenceItem[] = [
   },
 ];
 
+export const BELOWLINE_POSTS = [
+  {
+    id: 'BELOW-006',
+    title: 'Service Notice: Bedrock Acoustic Dampening along Loop 4',
+    authorHandle: 'underplatform_9',
+    body: 'Loop 4 acoustic returns show 14% mineral damping increase. If the tunnel answers your footstep in sandstone rather than cast iron, adjust your pace by two half-beats. Silence is not an absence of trains; it is a change in stone density.',
+    timestamp: '1 day ago',
+  },
+  {
+    id: 'BELOW-007',
+    title: 'Union Grievance 89-D: Freight Vibration in Residential Strata',
+    authorHandle: 'red_line_red_line',
+    body: 'MANAGEMENT DISPATCHED NIGHT FREIGHT AT 45 KM/H THROUGH RESIDENTIAL LIMESTONE. SLEEPING COLONIES REPORTED CRACKED BEDROCK IN LOWER CONDUIT 14. SPEED LIMIT REMAINS 25 KM/H IN POPULATED STRATA.',
+    timestamp: '2 days ago',
+  },
+  {
+    id: 'BELOW-008',
+    title: 'Lost Station Etiquette: Platform V-Null Memory Protocol',
+    authorHandle: 'underplatform_9',
+    body: 'Do not speak the 1974 demolition date inside load-bearing columns. Memorial weight left on abandoned tracks disrupts Knucklerail navigation. If the wall returns an obsolete arrival chime, step backward three paces.',
+    timestamp: '3 days ago',
+  },
+  {
+    id: 'BELOW-009',
+    title: 'Conduit Warning: Steam Line Pressure Fluctuations',
+    authorHandle: 'red_line_red_line',
+    body: 'SURFACE HEATING RETROFITS ARE LEAKING 120 PSI CONDENSATE INTO SPUR 8. Knucklerails crossing joint 12 must decelerate to avoid thermal shell blistering.',
+    timestamp: '4 days ago',
+  },
+  {
+    id: 'BELOW-010',
+    title: 'O03 // Belowline Union Route Optimization Workbench',
+    authorHandle: 'red_line_red_line',
+    body: 'Union challenge: Calculate the optimal transit route from Central Arch to Annex N Spur without disturbing Foundation Widow nests along Platform V-Null. Correct routing saves carrier red_line_red_line from disciplinary action and awards Belowline trust.',
+    timestamp: 'Just now',
+  },
+];
+
 export const BELOWLINE_MESSAGES: Message[] = [
   {
     id: 'MSG-006',

@@ -162,3 +162,84 @@ export const VESPER_EVIDENCE: EvidenceItem[] = [
     targetCases: ['case_terms_may_apply_clause'],
   },
 ];
+
+export const VESPER_DISCUSSIONS = [
+  {
+    id: 'VESP-005',
+    title: 'Would You Date a Human?',
+    authorHandle: 'ROOM_TONE',
+    body: 'They are warm, structurally singular in theory, and culturally incapable of stating what they want before being asked where they want to eat. We would date one human or twelve. We would not date "whatever you want."',
+    timestamp: '1 day ago',
+    comments: [
+      {
+        id: 'comm_v5_1',
+        authorHandle: 'soft_error',
+        body: 'Humans molt verbally,, "I don\'t mind" often means the skin is not ready.',
+        timestamp: '18h ago',
+      },
+      {
+        id: 'comm_v5_2',
+        authorHandle: 'AUNTIE_STATIC',
+        body: 'Observe the refrigerator stare. They wait for desire to arrive after the door opens.',
+        timestamp: '16h ago',
+      },
+    ],
+  },
+  {
+    id: 'VESP-006',
+    title: 'Is Dream Acoustic Sharing Considered Cohabitation?',
+    authorHandle: 'ApartmentChoir_4',
+    body: 'If two choirs harmonize nocturnal dream frequencies across adjacent buildings, does that create shared tenancy obligations? Our landlord heard the bass resonance in the floorboards.',
+    timestamp: '2 days ago',
+    comments: [
+      {
+        id: 'comm_v6_1',
+        authorHandle: 'ROOM_TONE',
+        body: 'Harmonizing is not lease assumption. Retain separate exit routes.',
+        timestamp: '1 day ago',
+      },
+      {
+        id: 'comm_v6_2',
+        authorHandle: 'TermsMayApply',
+        body: 'Acoustic vibration exceeding 40 Hz constitutes constructive occupancy in three wards.',
+        timestamp: '1 day ago',
+      },
+    ],
+  },
+  {
+    id: 'VESP-007',
+    title: 'Safety Notice: Why "Perfect Overlap" Is a Danger Sign',
+    authorHandle: 'VesperSafety_Admin',
+    body: 'Compatibility describes negotiated coexistence across different bodies. A profile claiming zero conflict and universal agreement has either omitted a body or omitted consent.',
+    timestamp: '3 days ago',
+    comments: [
+      {
+        id: 'comm_v7_1',
+        authorHandle: 'calmly_complete',
+        body: 'Peace does not require suspicion.',
+        timestamp: '2 days ago',
+      },
+      {
+        id: 'comm_v7_2',
+        authorHandle: 'ROOM_TONE',
+        body: 'Peace without irritation is just someone else\'s peace.',
+        timestamp: '2 days ago',
+      },
+    ],
+  },
+  {
+    id: 'VESP-008',
+    title: 'O04 // Provisional Compatibility Profile Alignment',
+    authorHandle: 'VesperSafety_Admin',
+    body: 'Authored matching exercise: Define explicit boundaries, light tolerance, occupancy, and unilateral exit protocols for your provisional species profile. Proves that difference is safe when negotiated honestly.',
+    timestamp: 'Just now',
+    comments: [
+      {
+        id: 'comm_v8_1',
+        authorHandle: 'threshold_patron',
+        body: 'Name the door and the return path. That is all intimacy requires.',
+        timestamp: 'Just now',
+      },
+    ],
+  },
+];

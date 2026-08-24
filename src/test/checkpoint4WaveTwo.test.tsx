@@ -59,8 +59,8 @@ describe('Checkpoint 4 Vesper, Pale Market & Communion Wave Two', () => {
     expect(screen.getByRole('heading', { name: /Vesper Compatibility Constellation/i })).toBeInTheDocument();
     expect(screen.getByText(/ROOM_TONE: Compatibility Is Not Sameness/i)).toBeInTheDocument();
     expect(screen.getByText(/The Body-Sharing Agreement/i)).toBeInTheDocument();
-    expect(screen.getByText(/@ROOM_TONE/i)).toBeInTheDocument();
-    expect(screen.getByText(/@Lichen_And_Loom/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '@ROOM_TONE' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '@Lichen_And_Loom' })).toBeInTheDocument();
   });
 
   it('2. P08 ROOM_TONE Case identifies Date C collection event and secures EV-009', async () => {

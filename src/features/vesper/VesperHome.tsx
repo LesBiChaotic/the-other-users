@@ -5,10 +5,12 @@
  * Replaces generic swipe-based dating patterns with explicit negotiated coexistence.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './VesperHome.module.css';
-import { VESPER_PROFILES } from '../../content/fixtures/vesperContent';
+import { VESPER_PROFILES, VESPER_DISCUSSIONS } from '../../content/fixtures/vesperContent';
+import { BaseButton } from '../../components/primitives/BaseButton';
+import { useGameStore } from '../../domain/state/useGameStore';
 
 export const VesperHome: React.FC = () => {
   return (
@@ -92,6 +94,127 @@ export const VesperHome: React.FC = () => {
           </div>
         ))}
       </section>
+
+      {/* Ordinary Discussions Stream & O04 Workbench */}
+      <section aria-labelledby="discussions-title" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <h2 id="discussions-title" className="type-h3">
+          Public Intimacy Discussions & Safety Protocols
+        </h2>
+
+        {VESPER_DISCUSSIONS.map((disc) => {
+          const isO04 = disc.id === 'VESP-008';
+          return (
+            <div
+              key={disc.id}
+              style={{
+                backgroundColor: 'var(--bg-paper)',
+                border: '1px solid var(--line-subtle)',
+                borderLeft: isO04 ? '4px solid var(--accent-permission)' : '3px solid var(--accent-network)',
+                borderRadius: 'var(--radius-4)',
+                padding: 'var(--space-4)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--space-2)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <h3 className="type-h3">{disc.title}</h3>
+                <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-network)' }}>
+                  @{disc.authorHandle} • {disc.timestamp}
+                </span>
+              </div>
+
+              <p className="type-body">{disc.body}</p>
+
+              {/* O04 Interactive Alignment Workbench */}
+              {isO04 && <VesperProfileAlignmentWorkbench />}
+
+              {disc.comments && disc.comments.length > 0 && (
+                <div style={{ marginTop: 'var(--space-2)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', borderTop: '1px solid var(--line-subtle)', paddingTop: 'var(--space-2)' }}>
+                  {disc.comments.map((c, i) => (
+                    <div key={i} style={{ padding: 'var(--space-2)', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-4)' }}>
+                      <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-network)' }}>
+                        @{c.authorHandle}:
+                      </span>
+                      <p className="type-small" style={{ marginTop: '2px' }}>
+                        {c.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </section>
     </article>
+  );
+};
+
+const VesperProfileAlignmentWorkbench: React.FC = () => {
+  const [selectedSeparation, setSelectedSeparation] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const gameState = useGameStore((s) => s.gameState);
+  const puzzleState = useGameStore((s) => s.puzzleState);
+  const setPuzzleStatus = useGameStore((s) => s.setPuzzleStatus);
+  const setFlag = useGameStore((s) => s.setFlag);
+  const changeReputation = useGameStore((s) => s.changeReputation);
+
+  const isSolved = Boolean(puzzleState['o04_vesper_compatibility_profile']?.status === 'solved' || gameState.flags['o04_solved']);
+
+  const ensurePuzzleActive = (puzzleId: string) => {
+    const status = useGameStore.getState().puzzleState[puzzleId]?.status ?? 'unseen';
+    if (status === 'unseen') {
+      setPuzzleStatus(puzzleId, 'introduced');
+      setPuzzleStatus(puzzleId, 'active');
+    } else if (status === 'introduced') {
+      setPuzzleStatus(puzzleId, 'active');
+    }
+  };
+
+  const handleAlign = (sepChoice: string) => {
+    setSelectedSeparation(sepChoice);
+    if (sepChoice === 'unilateral_threshold') {
+      ensurePuzzleActive('o04_vesper_compatibility_profile');
+      setPuzzleStatus('o04_vesper_compatibility_profile', 'solved', { separation: sepChoice }, 'Authored safe compatibility boundaries.');
+      setFlag('o04_solved', true);
+      changeReputation('plurality_accord', 15);
+      setFeedback('✓ Profile parameters ratified! Declared unilateral threshold exit; +15 Plurality trust awarded.');
+    } else {
+      setFeedback('Alignment rejected: Permanent synchronization eliminates consent and violates Vesper boundary ethics.');
+    }
+  };
+
+  return (
+    <div style={{ marginTop: 'var(--space-2)', padding: 'var(--space-3)', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+      <p className="type-small" style={{ fontWeight: 700 }}>
+        Declare Emergency Separation Protocol for Domestic Witness:
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+        <BaseButton
+          variant={selectedSeparation === 'unilateral_threshold' ? 'primary' : 'default'}
+          onClick={() => handleAlign('unilateral_threshold')}
+          disabled={isSolved}
+        >
+          Unilateral Threshold Exit: Instant separation upon stepping onto porch threshold
+        </BaseButton>
+
+        <BaseButton
+          variant={selectedSeparation === 'permanent_harmony' ? 'primary' : 'default'}
+          onClick={() => handleAlign('permanent_harmony')}
+          disabled={isSolved}
+        >
+          Permanent Synchronization: No exit required (Universal Harmony)
+        </BaseButton>
+      </div>
+
+      {feedback && (
+        <p className="type-small" style={{ color: isSolved ? 'var(--accent-permission)' : 'var(--accent-warning)', fontWeight: 700 }}>
+          {feedback}
+        </p>
+      )}
+    </div>
   );
 };

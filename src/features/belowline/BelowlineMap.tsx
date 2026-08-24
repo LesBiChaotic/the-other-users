@@ -8,8 +8,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './BelowlineMap.module.css';
-import { BELOWLINE_STATIONS } from '../../content/fixtures/belowlineContent';
+import { BELOWLINE_STATIONS, BELOWLINE_POSTS } from '../../content/fixtures/belowlineContent';
 import { BaseButton } from '../../components/primitives/BaseButton';
+import { useGameStore } from '../../domain/state/useGameStore';
 
 export const BelowlineMap: React.FC = () => {
   const [zoomLevel, setZoomLevel] = useState<number>(100);
@@ -102,6 +103,112 @@ export const BelowlineMap: React.FC = () => {
           ))}
         </ul>
       </section>
+
+      {/* Ordinary Community Dispatches & O03 Workbench */}
+      <section aria-labelledby="dispatches-title" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <h2 id="dispatches-title" className="type-h3">
+          Belowline Union Dispatches & Route Notices
+        </h2>
+
+        {BELOWLINE_POSTS.map((post) => {
+          const isO03 = post.id === 'BELOW-010';
+          return (
+            <div
+              key={post.id}
+              style={{
+                backgroundColor: 'var(--bg-paper)',
+                border: '1px solid var(--line-subtle)',
+                borderLeft: isO03 ? '4px solid var(--accent-permission)' : '3px solid var(--line-emphasis)',
+                borderRadius: 'var(--radius-4)',
+                padding: 'var(--space-4)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--space-2)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <h3 className="type-h3">{post.title}</h3>
+                <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--accent-network)' }}>
+                  @{post.authorHandle} • {post.timestamp}
+                </span>
+              </div>
+
+              <p className="type-body">{post.body}</p>
+
+              {/* O03 Interactive Optimizer */}
+              {isO03 && <BelowlineRouteOptimizer />}
+            </div>
+          );
+        })}
+      </section>
     </article>
+  );
+};
+
+const BelowlineRouteOptimizer: React.FC = () => {
+  const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const gameState = useGameStore((s) => s.gameState);
+  const puzzleState = useGameStore((s) => s.puzzleState);
+  const setPuzzleStatus = useGameStore((s) => s.setPuzzleStatus);
+  const setFlag = useGameStore((s) => s.setFlag);
+  const changeRelationship = useGameStore((s) => s.changeRelationship);
+
+  const isSolved = Boolean(puzzleState['o03_belowline_route_optimization']?.status === 'solved' || gameState.flags['o03_solved']);
+
+  const ensurePuzzleActive = (puzzleId: string) => {
+    const status = useGameStore.getState().puzzleState[puzzleId]?.status ?? 'unseen';
+    if (status === 'unseen') {
+      setPuzzleStatus(puzzleId, 'introduced');
+      setPuzzleStatus(puzzleId, 'active');
+    } else if (status === 'introduced') {
+      setPuzzleStatus(puzzleId, 'active');
+    }
+  };
+
+  const handleOptimize = (routeChoice: string) => {
+    setSelectedRoute(routeChoice);
+    if (routeChoice === 'conduit_14_bypass') {
+      ensurePuzzleActive('o03_belowline_route_optimization');
+      setPuzzleStatus('o03_belowline_route_optimization', 'solved', { route: routeChoice }, 'Optimal Conduit 14 bypass selected.');
+      setFlag('o03_solved', true);
+      changeRelationship('usr_red', 15);
+      setFeedback('✓ Route confirmed! red_line_red_line saved from union discipline; +15 Belowline trust awarded.');
+    } else {
+      setFeedback('Route rejected: Crossing Platform V-Null disturbs Foundation Widow nests and cracks carrier axles.');
+    }
+  };
+
+  return (
+    <div style={{ marginTop: 'var(--space-2)', padding: 'var(--space-3)', backgroundColor: 'var(--bg-surface)', borderRadius: 'var(--radius-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+      <p className="type-small" style={{ fontWeight: 700 }}>
+        Select Freight Alignment for red_line_red_line:
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+        <BaseButton
+          variant={selectedRoute === 'platform_v_direct' ? 'primary' : 'default'}
+          onClick={() => handleOptimize('platform_v_direct')}
+          disabled={isSolved}
+        >
+          Direct Line: Platform V-Null High-Speed Track (High Stress)
+        </BaseButton>
+
+        <BaseButton
+          variant={selectedRoute === 'conduit_14_bypass' ? 'primary' : 'default'}
+          onClick={() => handleOptimize('conduit_14_bypass')}
+          disabled={isSolved}
+        >
+          Protected Bypass: Lower Conduit 14 Seepage Channel (Low Damping)
+        </BaseButton>
+      </div>
+
+      {feedback && (
+        <p className="type-small" style={{ color: isSolved ? 'var(--accent-permission)' : 'var(--accent-warning)', fontWeight: 700 }}>
+          {feedback}
+        </p>
+      )}
+    </div>
   );
 };
