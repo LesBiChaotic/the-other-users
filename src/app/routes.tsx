@@ -48,6 +48,12 @@ import { CommunionStream } from '../features/communion/CommunionStream';
 import { TestimonyArchive } from '../features/communion/TestimonyArchive';
 import { LitanyConcordance } from '../features/communion/LitanyConcordance';
 
+// Checkpoint 5: Menagerie Directorate
+import { MenagerieRegistry } from '../features/menagerie/MenagerieRegistry';
+import { MenagerieOps } from '../features/menagerie/MenagerieOps';
+import { EnclosureDetail } from '../features/menagerie/EnclosureDetail';
+import { IlyrThresholdProcedure } from '../features/menagerie/IlyrThresholdProcedure';
+
 export interface GuardedRouteProps {
   path: string;
   children: React.ReactNode;
@@ -124,6 +130,10 @@ const SURFACE_COMPONENTS: Record<string, React.ReactNode> = {
   '/communion': <CommunionStream />,
   '/communion/testimonies': <TestimonyArchive />,
   '/communion/litany': <LitanyConcordance />,
+  '/menagerie': <MenagerieRegistry />,
+  '/menagerie/ops': <MenagerieOps />,
+  '/menagerie/enclosure/:id': <EnclosureDetail />,
+  '/menagerie/threshold': <IlyrThresholdProcedure />,
 };
 
 export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {

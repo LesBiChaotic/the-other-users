@@ -1,0 +1,77 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--accent-warning);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-warning);
+  text-transform: uppercase;
+}
+
+.sensorMatrix {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sensorCard {
+  background-color: var(--bg-paper);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sensorCardLive {
+  border-left: 4px solid var(--accent-permission);
+}
+
+.sensorCardLoop {
+  border-left: 4px solid var(--accent-warning);
+}
+
+.sensorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sensorName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sensorTypeBadge {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-4);
+}
+
+.auditControls {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--line-emphasis);
+  border-radius: var(--radius-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
