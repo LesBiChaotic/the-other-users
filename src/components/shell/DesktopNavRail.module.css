@@ -6,14 +6,16 @@
   .rail {
     display: flex;
     flex-direction: column;
-    width: 260px;
+    width: 272px;
     height: 100vh;
     height: 100dvh;
     position: sticky;
     top: 0;
-    background-color: var(--bg-paper);
+    background:
+      linear-gradient(180deg, var(--signal-soft), transparent 30%),
+      var(--bg-paper);
     border-right: 1px solid var(--line-subtle);
-    padding: var(--space-5) var(--space-4);
+    padding: var(--space-6) var(--space-5);
     box-sizing: border-box;
     gap: var(--space-6);
   }
@@ -28,14 +30,17 @@
 }
 
 .brandMark {
-  font-family: ui-monospace, SFMono-Regular, monospace;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-family: var(--font-mono);
+  font-weight: 650;
+  font-size: 1rem;
+  letter-spacing: .12em;
   color: var(--accent-network);
 }
 
 .brandTagline {
-  font-size: 0.8rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-style: italic;
   color: var(--text-muted);
 }
 
@@ -43,7 +48,8 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0;
+  border-top: 1px solid var(--line-subtle);
   flex: 1;
 }
 
@@ -51,11 +57,12 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-4);
+  padding: var(--space-3) 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--line-subtle);
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   min-height: var(--touch-target-min);
   box-sizing: border-box;
@@ -63,7 +70,7 @@
 }
 
 .navLink:hover {
-  background-color: var(--bg-surface);
+  background: linear-gradient(90deg, var(--signal-soft), transparent);
   color: var(--text-primary);
 }
 
@@ -72,14 +79,18 @@
 }
 
 .active {
-  background-color: var(--bg-surface);
+  background: linear-gradient(90deg, var(--signal-soft), transparent);
   color: var(--accent-network);
   font-weight: 600;
-  border-left: 3px solid var(--accent-network);
+  border-left: 0;
 }
 
+.active::after { content: '●'; margin-left: auto; font-size: .5rem; color: var(--accent-network); }
+
 .icon {
-  font-size: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .08em;
   width: 24px;
   text-align: center;
 }
@@ -103,7 +114,7 @@
 }
 
 .statusIndicator {
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-muted);
 }
