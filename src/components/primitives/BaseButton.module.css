@@ -1,25 +1,38 @@
 .button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: var(--space-5);
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
-  padding: var(--space-2) var(--space-4);
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: var(--radius-4);
-  background-color: var(--bg-surface);
+  padding: 11px var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+  border-radius: 0;
+  background: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--line-subtle);
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  border: 0;
+  border-bottom: 1px solid var(--line-emphasis);
+  transition: color var(--transition-fast), background-color var(--transition-fast), padding var(--transition-fast);
   text-decoration: none;
   box-sizing: border-box;
 }
 
-.button:hover:not(:disabled) {
-  background-color: var(--bg-paper);
-  border-color: var(--line-emphasis);
+.button::after {
+  content: '↗';
+  color: var(--accent-network);
+  font-size: 1rem;
+  transition: transform var(--transition-fast);
 }
+
+.button:hover:not(:disabled) {
+  background-color: var(--signal-soft);
+  padding-left: calc(var(--space-4) + 4px);
+}
+
+.button:hover:not(:disabled)::after { transform: translate(2px, -2px); }
 
 .button:focus-visible {
   outline: 2px solid var(--focus);
@@ -33,12 +46,13 @@
 
 .primary {
   background-color: var(--accent-network);
-  color: var(--bg-paper);
-  border-color: var(--accent-network);
+  color: var(--ink-deep);
+  border-bottom-color: var(--accent-network);
 }
 
 .primary:hover:not(:disabled) {
-  opacity: 0.9;
+  background-color: var(--text-primary);
+  color: var(--bg-canvas);
 }
 
 .danger {
@@ -46,3 +60,5 @@
   color: #FFFFFF;
   border-color: var(--accent-warning);
 }
+
+.danger::after { color: #fff; }
