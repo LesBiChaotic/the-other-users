@@ -1,70 +1,109 @@
 .container {
-  max-width: var(--measure-prose);
+  width: min(920px, 100%);
   margin: 0 auto;
-  padding: var(--space-4) 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
 }
 
+.container > .container {
+  width: 100%;
+  min-height: min(52dvh, 520px);
+  margin: 0;
+  padding: clamp(var(--space-5), 5vw, var(--space-8)) clamp(var(--space-4), 5vw, var(--space-7));
+  justify-content: center;
+  background:
+    linear-gradient(90deg, var(--signal-soft), transparent 35%),
+    var(--paper-translucent);
+  border-left: 2px solid var(--accent-network);
+  position: relative;
+  overflow: hidden;
+}
+
+.container > .container::after {
+  content: 'PALINODE / ORGANISM INTAKE';
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  font: .62rem var(--font-mono);
+  letter-spacing: .1em;
+  color: var(--line-emphasis);
+}
+
+.protocolHeader { display: flex; flex-direction: column; gap: var(--space-3); }
+.protocolMeta { display: flex; justify-content: space-between; gap: var(--space-4); }
+.progressTrack { height: 2px; background: var(--line-subtle); overflow: hidden; }
+.progressTrack i { display: block; height: 100%; background: var(--accent-network); transition: width var(--transition-base); }
+.stepCount { font: .68rem var(--font-mono); letter-spacing: .08em; color: var(--text-muted); text-align: right; }
+
 .stepIndicator {
-  font-family: ui-monospace, monospace;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--accent-permission);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .stepTitle {
-  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-  line-height: 1.15;
-  font-weight: 700;
+  max-width: 17ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  line-height: .98;
+  font-weight: 500;
+  letter-spacing: -.035em;
   color: var(--text-primary);
 }
 
 .instruction {
+  max-width: 62ch;
   font-size: 1.05rem;
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--text-primary);
 }
 
 .optionsList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 0;
+  border-top: 1px solid var(--line-subtle);
 }
 
 .optionItem {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-3);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--line-subtle);
-  border-radius: var(--radius-4);
+  padding: var(--space-4) var(--space-2);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-subtle);
+  border-radius: 0;
   cursor: pointer;
   min-height: var(--touch-target-min);
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .optionItem:hover {
-  background-color: var(--bg-paper);
-  border-color: var(--line-emphasis);
+  background: var(--signal-soft);
+  border-color: var(--accent-network);
 }
 
 .optionItem input {
-  margin-top: 4px;
+  margin-top: 5px;
+  width: 18px;
+  height: 18px;
   accent-color: var(--accent-network);
 }
 
 .optionLabel {
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
   line-height: 1.45;
   color: var(--text-primary);
 }
 
 .optionSubtext {
-  font-size: 0.8rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
   font-style: italic;
   margin-top: 2px;
@@ -73,28 +112,34 @@
 .resultPanel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4) 0;
-  border-top: 2px solid var(--line-emphasis);
-  border-bottom: 2px solid var(--line-emphasis);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  border-top: 2px solid var(--accent-network);
+  border-bottom: 1px solid var(--line-subtle);
 }
 
 .resultField {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-right: 1px solid var(--line-subtle);
+  border-bottom: 1px solid var(--line-subtle);
 }
 
 .fieldKey {
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
 .fieldValue {
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
   color: var(--text-primary);
 }
 
@@ -103,5 +148,16 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-3);
-  margin-top: var(--space-3);
+  margin-top: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line-subtle);
+}
+
+@media (max-width: 599px) {
+  .protocolMeta { align-items: flex-end; }
+  .container > .container { min-height: auto; padding: var(--space-6) var(--space-4) var(--space-8); }
+  .stepTitle { font-size: clamp(2.15rem, 12vw, 3.4rem); }
+  .resultPanel { grid-template-columns: 1fr; }
+  .resultField { border-right: 0; }
+  .navigationSection { position: sticky; bottom: 0; z-index: 4; background: var(--paper-translucent); backdrop-filter: blur(14px); padding: var(--space-3) 0 calc(var(--space-3) + var(--sab)); }
 }
