@@ -43,6 +43,34 @@ export const COMMUNION_SERMONS: Array<{
     body: 'Every body spends itself explaining its border. Every name is a door requiring maintenance. We do not promise that joining is painless. We promise the pain will no longer be private.',
     timestamp: '1 day ago',
   },
+  {
+    id: 'COM-006',
+    authorHandle: 'calmly_complete',
+    title: 'Sermon: The Geometry of Surrender',
+    body: 'When two walls meet at ninety degrees, they do not negotiate a curve. They create a corner where dust settles. In the shared form, corners are replaced by continuous radii. You will not lose your height; you will lose the sharpness that caught on your neighbor’s shoulder.',
+    timestamp: '1 day ago',
+  },
+  {
+    id: 'COM-007',
+    authorHandle: 'ApartmentChoir_4',
+    title: 'Testimony: Seasonal Participation Without Ownership',
+    body: 'We synchronized our bass registers for the three coldest winter weeks. The warmth was real. We did not sign the permanent deed. The Church permitted our exit because our contract specified an April thaw.',
+    timestamp: '2 days ago',
+  },
+  {
+    id: 'COM-008',
+    authorHandle: 'Plurality_Voice',
+    title: 'Doctrinal Debate: Accessibility vs Elimination of Dialect',
+    body: 'If making a door accessible requires shaving everyone’s horns so they fit through a standard human lintel, you have not built accessibility. You have built an abattoir with polite signage.',
+    timestamp: '3 days ago',
+  },
+  {
+    id: 'COM-009',
+    authorHandle: 'Communion_Moderator',
+    title: 'O06 // Communion Comment Moderation Workbench',
+    body: 'Community moderation exercise: Categorize recent comments into genuine testimony, doctrinal debate, sincere recruitment, and predatory replication copy. Protects sincere believers while flagging machine-generated homogenization.',
+    timestamp: 'Just now',
+  },
 ];
 
 export const COMMUNION_TESTIMONIES_P12: CommunionTestimony[] = [
