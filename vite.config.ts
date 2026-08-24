@@ -2,9 +2,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 
 export default defineConfig({
-  plugins: [react()],
+  base: '/the-other-users/',
+  plugins: [
+    react(),
+    {
+      name: 'spa-404-fallback',
+      closeBundle() {
+        const distDir = path.resolve(__dirname, 'dist');
+        const indexHtml = path.join(distDir, 'index.html');
+        const notFoundHtml = path.join(distDir, '404.html');
+        if (fs.existsSync(indexHtml)) {
+          fs.copyFileSync(indexHtml, notFoundHtml);
+        }
+      },
+    },
+  ],
   resolve: {
     alias: {
       '@app': path.resolve(__dirname, './src/app'),

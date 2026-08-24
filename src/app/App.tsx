@@ -14,7 +14,9 @@ import '../styles/reset.css';
 import '../styles/typography.css';
 import '../styles/layout.css';
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {
+  basename: import.meta.env.BASE_URL,
+});
 
 export const App: React.FC = () => {
   const hydrate = useGameStore((state) => state.hydrate);
