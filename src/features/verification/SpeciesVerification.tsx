@@ -11,6 +11,29 @@ import styles from './SpeciesVerification.module.css';
 import { VERIFICATION_STEPS } from '../../content/fixtures/checkpoint1Content';
 import { BaseButton } from '../../components/primitives/BaseButton';
 import { useGameStore } from '../../domain/state/useGameStore';
+import type { PuzzleStatus } from '../../domain/types/conditions';
+
+type SetPuzzleStatus = ReturnType<typeof useGameStore.getState>['setPuzzleStatus'];
+
+/** Complete a verification puzzle without trying to rewind a persisted terminal state. */
+function completeVerificationPuzzle(
+  puzzleId: string,
+  status: PuzzleStatus,
+  setPuzzleStatus: SetPuzzleStatus,
+  workingInput: unknown,
+  feedback: string
+) {
+  if (status === 'solved' || status === 'bypassed') return;
+
+  if (status === 'unseen') {
+    setPuzzleStatus(puzzleId, 'introduced');
+    setPuzzleStatus(puzzleId, 'active');
+  } else if (status === 'introduced' || status === 'consequentialFailure' || status === 'revisitable') {
+    setPuzzleStatus(puzzleId, 'active');
+  }
+
+  setPuzzleStatus(puzzleId, 'solved', workingInput, feedback);
+}
 
 export const SpeciesVerification: React.FC = () => {
   const navigate = useNavigate();
@@ -28,6 +51,8 @@ export const SpeciesVerification: React.FC = () => {
   const setFlag = useGameStore((s) => s.setFlag);
   const setPuzzleStatus = useGameStore((s) => s.setPuzzleStatus);
   const discoverEvidence = useGameStore((s) => s.discoverEvidence);
+  const p00Status = useGameStore((s) => s.puzzleState.p00_species_verification?.status ?? 'unseen');
+  const p01Status = useGameStore((s) => s.puzzleState.p01_unobserved_behavior?.status ?? 'unseen');
 
   // In-page unobserved behavioral timer
   useEffect(() => {
@@ -47,12 +72,10 @@ export const SpeciesVerification: React.FC = () => {
 
   const handleNextStep = () => {
     if (currentStep === 2) {
-      // Record P00 evaluation through legal state machine
-      setPuzzleStatus('p00_species_verification', 'introduced');
-      setPuzzleStatus('p00_species_verification', 'active');
-      setPuzzleStatus(
+      completeVerificationPuzzle(
         'p00_species_verification',
-        'solved',
+        p00Status,
+        setPuzzleStatus,
         selectedEntrances,
         'Entrances filtered by nonhuman permission protocol.'
       );
@@ -61,11 +84,10 @@ export const SpeciesVerification: React.FC = () => {
     if (currentStep === 4) {
       // Record P01 evaluation through legal state machine
       const actionChosen = unobservedAction || `Waited ${hesitationSeconds}s without prompting`;
-      setPuzzleStatus('p01_unobserved_behavior', 'introduced');
-      setPuzzleStatus('p01_unobserved_behavior', 'active');
-      setPuzzleStatus(
+      completeVerificationPuzzle(
         'p01_unobserved_behavior',
-        'solved',
+        p01Status,
+        setPuzzleStatus,
         { action: actionChosen, hesitationMs: hesitationSeconds * 1000 },
         'Behavioral hesitation observed.'
       );
