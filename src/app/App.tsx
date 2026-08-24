@@ -30,11 +30,7 @@ export const App: React.FC = () => {
 
   return (
     <RootErrorBoundary onSurfaceReset={resetSurface}>
-      <div className="layout-shell">
-        <main style={{ flex: 1, padding: 'var(--space-4) 0' }}>
-          <RouterProvider router={router} />
-        </main>
-      </div>
+      <RouterProvider router={router} />
     </RootErrorBoundary>
   );
 };
