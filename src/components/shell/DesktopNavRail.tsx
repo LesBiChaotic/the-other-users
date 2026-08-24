@@ -28,7 +28,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">⌂</span>
+            <span className={styles.icon} aria-hidden="true">01</span>
             <span>Home Feed</span>
           </NavLink>
         </li>
@@ -40,7 +40,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">✉</span>
+            <span className={styles.icon} aria-hidden="true">02</span>
             <span>Inbox</span>
             <span className={styles.badge} aria-label="1 transmission">1</span>
           </NavLink>
@@ -53,7 +53,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">☍</span>
+            <span className={styles.icon} aria-hidden="true">03</span>
             <span>Evidence Board</span>
           </NavLink>
         </li>
@@ -65,7 +65,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">👤</span>
+            <span className={styles.icon} aria-hidden="true">04</span>
             <span>Profile & Anatomy</span>
           </NavLink>
         </li>
@@ -77,7 +77,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">❖</span>
+            <span className={styles.icon} aria-hidden="true">05</span>
             <span>Communities</span>
           </NavLink>
         </li>
@@ -89,7 +89,7 @@ export const DesktopNavRail: React.FC = () => {
               `${styles.navLink} ${isActive ? styles.active : ''}`
             }
           >
-            <span className={styles.icon} aria-hidden="true">⚙</span>
+            <span className={styles.icon} aria-hidden="true">06</span>
             <span>Settings & Resets</span>
           </NavLink>
         </li>
