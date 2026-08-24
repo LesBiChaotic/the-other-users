@@ -18,6 +18,7 @@
     padding: var(--space-6) var(--space-5);
     box-sizing: border-box;
     gap: var(--space-6);
+    overflow: hidden;
   }
 }
 
@@ -50,7 +51,6 @@
   flex-direction: column;
   gap: 0;
   border-top: 1px solid var(--line-subtle);
-  flex: 1;
 }
 
 .navLink {
@@ -103,6 +103,109 @@
   font-weight: 700;
   padding: 2px 6px;
   border-radius: 10px;
+}
+
+.chapterNav {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.chapterHeading {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .12em;
+}
+
+.chapterList {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) 0 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.chapterItem {
+  position: relative;
+  margin-left: 8px;
+  border-left: 1px solid var(--line-subtle);
+}
+
+.chapterItem::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 17px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--bg-paper);
+  border: 1px solid var(--text-muted);
+}
+
+.chapterLink {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  min-height: 34px;
+  padding: 8px 0 7px var(--space-3);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.chapterLink:hover,
+.chapterLink:focus-visible {
+  color: var(--text-primary);
+  background: linear-gradient(90deg, var(--signal-soft), transparent);
+}
+
+.chapterLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+.chapterNumber,
+.chapterState {
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .08em;
+}
+
+.chapterName {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: .82rem;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chapterState {
+  color: var(--text-muted);
+}
+
+.lockedChapter {
+  color: var(--text-muted);
+  opacity: .48;
+}
+
+.currentChapter {
+  color: var(--accent-network);
+  opacity: 1;
+}
+
+.chapterItem:has(.currentChapter)::before {
+  background: var(--accent-network);
+  border-color: var(--accent-network);
+  box-shadow: 0 0 0 3px var(--signal-soft);
 }
 
 .footer {
