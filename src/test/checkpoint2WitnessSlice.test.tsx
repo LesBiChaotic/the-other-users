@@ -15,6 +15,19 @@ import { WitnessThreadDetail } from '../features/witness-wire/WitnessThreadDetai
 import { WitnessUserProfile } from '../features/witness-wire/WitnessUserProfile';
 import { PlayerObservationCase } from '../features/witness-wire/PlayerObservationCase';
 
+async function completeCaseEvidenceReview(user: ReturnType<typeof userEvent.setup>) {
+  const compareButtons = screen.getAllByRole('button', { name: 'Add to Comparison' });
+  await user.click(compareButtons[0]);
+  await user.click(compareButtons[5]);
+  await user.click(screen.getByRole('button', { name: /Test Capture-Method Difference/i }));
+
+  await user.click(screen.getByRole('button', { name: /2\. Routine Ledger/i }));
+  const removeButtons = screen.getAllByRole('button', { name: /Remove as Anomaly/i });
+  await user.click(removeButtons[3]);
+  await user.click(screen.getByRole('button', { name: /3\. Account Histories/i }));
+  await user.click(screen.getByRole('button', { name: /4\. Accusation & Commit/i }));
+}
+
 describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
   beforeEach(async () => {
     await saveManager.wipeAllPersistence();
@@ -50,6 +63,30 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
     const appliancesChip = screen.getByRole('button', { name: /Appliances/i });
     await user.click(appliancesChip);
     expect(screen.getByText(/Human Opens Cold Cabinet, Removes Nothing/i)).toBeInTheDocument();
+  });
+
+  it('1b. Promotes the personal case only after four distinct ordinary observations', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <WitnessWireHome />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/ORIENTATION REQUIRED \/\/ 0 OF 4/i)).toBeInTheDocument();
+    expect(screen.queryByText(/ACTIVE CASE DOSSIER/i)).not.toBeInTheDocument();
+
+    for (const title of [
+      /Human Opens Cold Cabinet, Removes Nothing/i,
+      /Human Says “I’m Coming” and Does Not Move/i,
+      /Is This Courtship or Pest Control\?/i,
+      /Human Rehearses Argument Alone, Wins/i,
+    ]) {
+      await user.click(screen.getByRole('link', { name: title }));
+    }
+
+    expect(screen.getByText(/ACTIVE CASE DOSSIER/i)).toBeInTheDocument();
+    expect(useGameStore.getState().gameState.flags.wire_threads_viewed_4).toBe(true);
   });
 
   it('2. Thread Detail renders continuous conversation and author annotations', () => {
@@ -94,12 +131,12 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
 
     // Verify 5 occluded images and 1 centered image
     expect(screen.getByText(/Kitchen Corner at 02:13/i)).toBeInTheDocument();
-    expect(screen.getByText(/Direct Subject Observation \(Uploaded Later\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Frame 06 — Direct Subject Observation/i)).toBeInTheDocument();
     expect(screen.getByText(/Geometry: Direct focal center, 0° occlusion, standard human eye-level lens/i)).toBeInTheDocument();
 
-    // Evidence acquired
+    // The centered-frame provenance is withheld until the player performs a comparison.
     expect(useGameStore.getState().evidenceState['EV-002'].discovered).toBe(true);
-    expect(useGameStore.getState().evidenceState['EV-003'].discovered).toBe(true);
+    expect(useGameStore.getState().evidenceState['EV-003']).toBeUndefined();
   });
 
   it('5. P03 Routine Ledger allows identifying and removing fabricated step', async () => {
@@ -132,9 +169,7 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
       </MemoryRouter>
     );
 
-    // Navigate to Decision tab
-    const decisionTab = screen.getByRole('button', { name: /4\. Accusation & Commit/i });
-    await user.click(decisionTab);
+    await completeCaseEvidenceReview(user);
 
     // Click Accuse AUNTIE_STATIC
     const accuseBtn = screen.getByRole('button', { name: /Accuse AUNTIE_STATIC of Replacement/i });
@@ -155,6 +190,24 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
     expect(screen.getByText(/Case 01 Resolved: Witness Fragment Secured/i)).toBeInTheDocument();
   });
 
+  it('6b. Defers judgment without accusing anyone or closing the case', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <PlayerObservationCase />
+      </MemoryRouter>
+    );
+
+    await user.click(screen.getByRole('button', { name: /4\. Accusation & Commit/i }));
+    await user.click(screen.getByRole('button', { name: /I Do Not Know Yet/i }));
+
+    const store = useGameStore.getState();
+    expect(store.narrativeState.choices.choice_ch01_photograph_judgment).toBe('ch01_not_enough_evidence');
+    expect(store.relationshipState.usr_nvr).toBeUndefined();
+    expect(store.gameState.unlockedGates.G1).not.toBe(true);
+    expect(screen.getByRole('heading', { name: /Observer Account Histories/i })).toBeInTheDocument();
+  });
+
   it('7. False Accusation Path (neverlookstraight) emits CON-ACC-WRONG and drops trust', async () => {
     const user = userEvent.setup();
     render(
@@ -163,9 +216,7 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
       </MemoryRouter>
     );
 
-    // Navigate to Decision tab
-    const decisionTab = screen.getByRole('button', { name: /4\. Accusation & Commit/i });
-    await user.click(decisionTab);
+    await completeCaseEvidenceReview(user);
 
     // Click Accuse neverlookstraight
     const accuseBtn = screen.getByRole('button', { name: /Accuse neverlookstraight of Surveillance/i });
@@ -178,7 +229,7 @@ describe('Checkpoint 2 Witness Wire Vertical Slice', () => {
     // Verify false accusation state
     const store = useGameStore.getState();
     expect(store.gameState.flags['accused_wrong_user']).toBe(true);
-    expect(store.relationshipState['usr_nvr'].trust).toBe(-15);
+    expect(store.relationshipState['usr_nvr'].trust).toBe(-25);
     expect(screen.getByText(/False Accusation Posted/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Publish Public Correction \/ Apology \(O01\)/i })).toBeInTheDocument();
   });

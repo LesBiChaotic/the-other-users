@@ -5,7 +5,7 @@
  * and the pinned Player Observation Case.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './WitnessWireHome.module.css';
 import { WITNESS_WIRE_THREADS } from '../../content/fixtures/witnessWireContent';
@@ -16,16 +16,13 @@ export const WitnessWireHome: React.FC = () => {
   const setFlag = useGameStore((s) => s.setFlag);
   const flags = useGameStore((s) => s.gameState.flags);
 
-  // Track thread reading count for narrative progression
-  useEffect(() => {
-    const currentViewed = (flags['wire_threads_viewed_count'] as number) || 0;
-    if (currentViewed >= 3) {
-      setFlag('wire_threads_viewed_4', true);
-    }
-  }, [flags, setFlag]);
-
   const ordinaryThreads = WITNESS_WIRE_THREADS.filter((t) => !t.metadata?.isCaseFile);
   const caseThread = WITNESS_WIRE_THREADS.find((t) => t.metadata?.isCaseFile);
+  const viewedThreadIds = ordinaryThreads
+    .filter((thread) => flags[`wire_seen_${thread.id}`] === true)
+    .map((thread) => thread.id);
+  const archiveOverride = flags.archive_override === true;
+  const casePromoted = viewedThreadIds.length >= 4 || archiveOverride || flags.wire_threads_viewed_4 === true;
 
   const tags = ['All', 'Domestic Habits', 'Appliances', 'Linguistics', 'Courtship', 'Moderation Notice'];
 
@@ -36,10 +33,12 @@ export const WitnessWireHome: React.FC = () => {
           t.metadata?.tags?.includes(selectedTag)
         );
 
-  const recordThreadClick = () => {
-    const current = (flags['wire_threads_viewed_count'] as number) || 0;
-    setFlag('wire_threads_viewed_count', current + 1);
-    if (current + 1 >= 3) {
+  const recordThreadClick = (threadId: string) => {
+    if (flags[`wire_seen_${threadId}`] === true) return;
+    setFlag(`wire_seen_${threadId}`, true);
+    const nextCount = viewedThreadIds.length + 1;
+    setFlag('wire_threads_viewed_count', nextCount);
+    if (nextCount >= 4) {
       setFlag('wire_threads_viewed_4', true);
     }
   };
@@ -56,7 +55,7 @@ export const WitnessWireHome: React.FC = () => {
       </header>
 
       {/* Pinned Case Banner */}
-      {caseThread && (
+      {caseThread && casePromoted && (
         <Link
           to="/wire/case/player"
           className={styles.caseBanner}
@@ -69,6 +68,17 @@ export const WitnessWireHome: React.FC = () => {
             → Open Photographic & Routine Evidence Workbench
           </span>
         </Link>
+      )}
+
+      {!casePromoted && (
+        <section className={styles.ethicsNotice} aria-label="Observation ethics orientation">
+          <span className={styles.caseBadge}>ORIENTATION REQUIRED // {viewedThreadIds.length} OF 4 OBSERVATIONS READ</span>
+          <h2 className={styles.caseTitle}>Learn the witnesses before judging one.</h2>
+          <p className={styles.caseSnippet}>
+            Witness Wire does not open personal accusations to accounts that know its members only
+            as evidence. Read four ordinary observations. Repeatedly opening the same thread does not count.
+          </p>
+        </section>
       )}
 
       {/* Filter Bar */}
@@ -113,7 +123,7 @@ export const WitnessWireHome: React.FC = () => {
               <Link
                 to={`/wire/thread/${thread.id}`}
                 style={{ textDecoration: 'none', color: 'inherit' }}
-                onClick={recordThreadClick}
+                onClick={() => recordThreadClick(thread.id)}
               >
                 <h3 className={styles.threadTitle}>{thread.title}</h3>
                 <p className={styles.threadExcerpt}>{thread.body}</p>
@@ -121,6 +131,7 @@ export const WitnessWireHome: React.FC = () => {
 
               <div className={styles.threadFooter}>
                 <span>{thread.comments.length} annotations</span>
+                {flags[`wire_seen_${thread.id}`] === true && <span>• Read</span>}
                 {thread.metadata?.tags && (
                   <span>• {thread.metadata.tags.join(', ')}</span>
                 )}

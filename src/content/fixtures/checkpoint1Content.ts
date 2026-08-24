@@ -32,12 +32,12 @@ export const VERIFICATION_STEPS = {
     instruction:
       'Select every entrance you currently have permission to cross. Permission must be specific, current, and revocable. Shape alone does not make a threshold.',
     options: [
-      { id: 'ent_front_door', label: 'A residential front door unlocked from the inside', permitted: true, nonhumanInterpretation: 'Domestic threshold with active occupant consent.' },
+      { id: 'ent_front_door', label: 'A residential front door whose occupant explicitly invited you', permitted: true, nonhumanInterpretation: 'Domestic threshold with specific, current occupant consent.' },
       { id: 'ent_window_dark', label: 'A dark window on an unlit second floor', permitted: false, nonhumanInterpretation: 'Uninvited void; crossing constitutes hostile breach.' },
-      { id: 'ent_healed_wound', label: 'A healed incision on your own forearm', permitted: true, nonhumanInterpretation: 'Internal boundary reconciled by host organism.' },
+      { id: 'ent_healed_wound', label: 'A healed incision on your own forearm', permitted: false, nonhumanInterpretation: 'An entrance belonging to your body is not automatically permission to cross it.' },
       { id: 'ent_mirror_public', label: 'A public restroom mirror facing another mirror', permitted: false, nonhumanInterpretation: 'Recursive corridor; unmonitored transit hazard.' },
       { id: 'ent_spoken_name', label: 'A nickname given to you by someone who has forgotten it', permitted: false, nonhumanInterpretation: 'Expired nomination; phonetic trespass.' },
-      { id: 'ent_browser_tab', label: 'An open browser tab left inactive for eleven days', permitted: true, nonhumanInterpretation: 'Dormant cache allocated to your session.' },
+      { id: 'ent_browser_tab', label: 'The browser tab opened through this recovery invitation', permitted: true, nonhumanInterpretation: 'Action-bound threshold allocated to this invited session.' },
     ],
   },
   occupancy: {

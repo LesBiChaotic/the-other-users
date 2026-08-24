@@ -157,16 +157,22 @@ export const SpeciesVerification: React.FC = () => {
       {/* STEP 1: Account Notice */}
       {currentStep === 1 && (
         <section className={styles.container}>
-          <h1 className={styles.stepTitle}>Species Verification Protocol</h1>
+          <h1 className={styles.stepTitle}>The Account That Recovered You</h1>
           <p className={styles.instruction}>
-            Your connection arrived through an irregular recovery queue. Palinode protocols
-            require every node to declare its boundary shape, permission limits, and occupancy
-            density before accessing community traffic.
+            Your email arrived through an account-recovery request submitted before this address
+            existed in Palinode's records. The claimant body does not match the body reading now.
           </p>
-          <p className="type-small">
-            Nonhuman nodes perceive permission as physical structure. Proceeding will test your
-            anatomical boundaries.
-          </p>
+          <div className={styles.resultPanel}>
+            <div className={styles.resultField}>
+              <span className={styles.fieldKey}>RECOVERY CLAIM FILED</span>
+              <span className={styles.fieldValue}>11 days before account creation</span>
+            </div>
+            <div className={styles.resultField}>
+              <span className={styles.fieldKey}>CLAIMANT SPECIES</span>
+              <span className={styles.fieldValue}>Unresolved / permission retained</span>
+            </div>
+          </div>
+          <p className="type-small">Palinode verifies boundaries, not legal names. A false classification may be revised; an accepted invitation may not be reversible.</p>
         </section>
       )}
 
@@ -175,6 +181,11 @@ export const SpeciesVerification: React.FC = () => {
         <section className={styles.container}>
           <h1 className={styles.stepTitle}>{VERIFICATION_STEPS.p00_entrances.title}</h1>
           <p className={styles.instruction}>{VERIFICATION_STEPS.p00_entrances.instruction}</p>
+
+          <p className="type-small">
+            Example: a mouth may be shaped like an entrance, but shape does not grant entry.
+            A browser tab opened through your invitation is permitted until you close it.
+          </p>
 
           <div className={styles.optionsList} role="group" aria-label="Entrance Options">
             {VERIFICATION_STEPS.p00_entrances.options.map((option) => {
@@ -322,6 +333,9 @@ export const SpeciesVerification: React.FC = () => {
           </p>
           <p className="type-mono" style={{ color: 'var(--accent-permission)' }}>
             [Transmission received from MOURNINGSTAR in correspondence queue]
+          </p>
+          <p className="type-small" style={{ color: 'var(--accent-warning)' }}>
+            Profile forecast: reader will open the correspondence ledger before correcting their anatomy.
           </p>
         </section>
       )}

@@ -23,6 +23,10 @@ export const PlayerObservationCase: React.FC = () => {
   // P03 Working State
   const routineSteps = ROUTINE_STEPS_P03;
   const [removedStepIds, setRemovedStepIds] = useState<string[]>([]);
+  const [selectedPhotoIds, setSelectedPhotoIds] = useState<string[]>([]);
+  const [comparisonRecorded, setComparisonRecorded] = useState(false);
+  const [comparisonFeedback, setComparisonFeedback] = useState('Select two photographs whose capture methods should be compared.');
+  const [accountsReviewed, setAccountsReviewed] = useState(false);
 
   // P02/P03 Hint Level Tracking
   const [hintLevel, setHintLevel] = useState<number>(0);
@@ -41,9 +45,11 @@ export const PlayerObservationCase: React.FC = () => {
   const setFlag = useGameStore((s) => s.setFlag);
   const updateProfile = useGameStore((s) => s.updateProfile);
   const resetPuzzle = useGameStore((s) => s.resetPuzzle);
+  const commitNarrativeChoice = useGameStore((s) => s.commitNarrativeChoice);
 
   const gameState = useGameStore((s) => s.gameState);
   const puzzleState = useGameStore((s) => s.puzzleState);
+  const caseChoice = useGameStore((s) => s.narrativeState.choices.choice_ch01_photograph_judgment);
 
   const isCaseResolved = Boolean(gameState.unlockedGates['G1'] || gameState.flags['case_01_resolved']);
   const isWrongAccusation = gameState.flags['accused_wrong_user'] === true;
@@ -52,7 +58,6 @@ export const PlayerObservationCase: React.FC = () => {
   // On mount, discover evidence items for workbench
   useEffect(() => {
     discoverEvidence('EV-002', 'neverlookstraight archive');
-    discoverEvidence('EV-003', 'AUNTIE_STATIC case file');
     discoverEvidence('EV-004', 'MRS_COLD compressor logs');
   }, [discoverEvidence]);
 
@@ -68,9 +73,33 @@ export const PlayerObservationCase: React.FC = () => {
   };
 
   const toggleRemoveStep = (stepId: string) => {
-    setRemovedStepIds((prev) =>
-      prev.includes(stepId) ? prev.filter((id) => id !== stepId) : [...prev, stepId]
-    );
+    setRemovedStepIds((prev) => prev.includes(stepId) ? [] : [stepId]);
+  };
+
+  const togglePhotoComparison = (photoId: string) => {
+    setComparisonRecorded(false);
+    setSelectedPhotoIds((current) => {
+      if (current.includes(photoId)) return current.filter((id) => id !== photoId);
+      if (current.length === 2) return [current[1], photoId];
+      return [...current, photoId];
+    });
+  };
+
+  const runPhotoComparison = () => {
+    const selected = WITNESS_WIRE_IMAGES.filter((image) => selectedPhotoIds.includes(image.id));
+    if (selected.length !== 2) {
+      setComparisonFeedback('Choose exactly two records before testing the capture-method hypothesis.');
+      return;
+    }
+    const containsCentered = selected.some((image) => !image.edgeOcclusion);
+    const containsPeripheral = selected.some((image) => image.edgeOcclusion);
+    if (containsCentered && containsPeripheral) {
+      setComparisonRecorded(true);
+      setComparisonFeedback('Confirmed: the centered image belongs to a different observation method and uploader session than the peripheral set.');
+      discoverEvidence('EV-003', 'P02 capture-method comparison');
+    } else {
+      setComparisonFeedback('These records share the same peripheral method. Compare one of them with the later centered frame.');
+    }
   };
 
   const handleEscalateHint = () => {
@@ -88,6 +117,9 @@ export const PlayerObservationCase: React.FC = () => {
     setFlag('case_01_resolved', true);
     setFlag('p02_assisted', true);
     setFlag('p03_assisted', true);
+    if (!caseChoice || caseChoice === 'ch01_not_enough_evidence') {
+      commitNarrativeChoice('choice_ch01_photograph_judgment', 'ch01_trust_nvr_accuse_auntie');
+    }
     advanceChapter(1);
   };
 
@@ -95,6 +127,10 @@ export const PlayerObservationCase: React.FC = () => {
     resetPuzzle('p02_photographs');
     resetPuzzle('p03_routine');
     setRemovedStepIds([]);
+    setSelectedPhotoIds([]);
+    setComparisonRecorded(false);
+    setComparisonFeedback('Select two photographs whose capture methods should be compared.');
+    setAccountsReviewed(false);
     setHintLevel(0);
     setShowConfirmAccusation(null);
   };
@@ -113,6 +149,8 @@ export const PlayerObservationCase: React.FC = () => {
         { accused: 'AUNTIE_STATIC', verifiedPhotographer: 'neverlookstraight' },
         'Centered 6th image identified as AUNTIE_STATIC replacement artifact.'
       );
+
+      commitNarrativeChoice('choice_ch01_photograph_judgment', 'ch01_trust_nvr_accuse_auntie');
       setPuzzleStatus(
         'p03_routine',
         'solved',
@@ -124,7 +162,6 @@ export const PlayerObservationCase: React.FC = () => {
       advanceChapter(1);
       setFlag('case_01_resolved', true);
       setFlag('auntie_case_open', true);
-      changeRelationship('usr_nvr', 10);
       changeRelationship('usr_ilyr', 5);
 
       updateProfile({
@@ -153,7 +190,7 @@ export const PlayerObservationCase: React.FC = () => {
       );
 
       setFlag('accused_wrong_user', true);
-      changeRelationship('usr_nvr', -15);
+      commitNarrativeChoice('choice_ch01_photograph_judgment', 'ch01_accuse_nvr');
       changeRelationship('usr_ilyr', -10);
 
       updateProfile({
@@ -173,6 +210,13 @@ export const PlayerObservationCase: React.FC = () => {
     }
   };
 
+  const handleDeferJudgment = () => {
+    commitNarrativeChoice('choice_ch01_photograph_judgment', 'ch01_not_enough_evidence');
+    setFlag('case_01_deferred', true);
+    setAccountsReviewed(true);
+    setActiveTab('accounts');
+  };
+
   // Public Apology / Repair Route (O01)
   const handlePublishApology = () => {
     setFlag('repaired_apology', true);
@@ -189,6 +233,12 @@ export const PlayerObservationCase: React.FC = () => {
       'solved',
       { repaired: true, apologyText: apologyDraft },
       'Resolved via public apology O01.'
+    );
+    setPuzzleStatus(
+      'p03_routine',
+      'solved',
+      { assistedByCorrection: true, removedStep: 'step_invasive_select' },
+      'Routine reconstruction completed during public evidence correction.'
     );
 
     setShowApologyModal(false);
@@ -208,6 +258,9 @@ export const PlayerObservationCase: React.FC = () => {
         return 'Orientation: Identify which observer uploaded the invasive 6th image and reconstruct the authentic domestic routine.';
     }
   };
+
+  const routineIsValid = removedStepIds.length === 1 && removedStepIds[0] === 'step_invasive_select';
+  const investigationReady = comparisonRecorded && routineIsValid && accountsReviewed;
 
   return (
     <article className={styles.container}>
@@ -250,11 +303,17 @@ export const PlayerObservationCase: React.FC = () => {
       )}
 
       {isCaseResolved && !isWrongAccusation && (
-        <div style={{ padding: 'var(--space-3)', backgroundColor: 'var(--bg-paper)', border: '1px solid var(--accent-network)', borderRadius: 'var(--radius-4)' }}>
+        <div className={styles.resolutionNotice}>
           <h2 className="type-h3" style={{ color: 'var(--accent-network)' }}>✓ Case 01 Resolved: Witness Fragment Secured</h2>
           <p className="type-body" style={{ marginTop: 'var(--space-1)' }}>
             Gate <strong>G1</strong> unsealed. Moltinghouse and the Evidence Board are now open.
           </p>
+          <blockquote className={styles.softErrorLead}>
+            <strong>Recovered moderation link — soft_error:</strong><br />
+            “Auntie asked me to clean an argument from the archive. She used to hate clean endings,,
+            so I left the part where we were both still angry.”
+          </blockquote>
+          <Link to="/molt" className={styles.nextLead}>Follow the impossible archive correction →</Link>
         </div>
       )}
 
@@ -277,7 +336,7 @@ export const PlayerObservationCase: React.FC = () => {
         <button
           type="button"
           className={`${styles.tabButton} ${activeTab === 'accounts' ? styles.tabButtonActive : ''}`}
-          onClick={() => setActiveTab('accounts')}
+          onClick={() => { setActiveTab('accounts'); setAccountsReviewed(true); }}
         >
           3. Account Histories
         </button>
@@ -306,12 +365,14 @@ export const PlayerObservationCase: React.FC = () => {
               <div
                 key={img.id}
                 className={`${styles.imageCard} ${
-                  !img.edgeOcclusion ? styles.imageCardSuspicious : ''
+                  selectedPhotoIds.includes(img.id) ? styles.imageCardSelected : ''
                 }`}
               >
                 <div className={styles.imageHeader}>
                   <h3 className={styles.imageTitle}>{img.title}</h3>
-                  <span className={styles.uploaderTag}>Uploader: @{img.uploaderHandle}</span>
+                  <span className={styles.uploaderTag}>
+                    {comparisonRecorded ? `Provenance: @${img.uploaderHandle}` : 'Provenance sealed pending comparison'}
+                  </span>
                 </div>
 
                 <div className={styles.imageMockup}>
@@ -325,8 +386,24 @@ export const PlayerObservationCase: React.FC = () => {
                     {img.inferenceNote}
                   </span>
                 </div>
+                <BaseButton
+                  variant={selectedPhotoIds.includes(img.id) ? 'primary' : 'default'}
+                  onClick={() => togglePhotoComparison(img.id)}
+                >
+                  {selectedPhotoIds.includes(img.id) ? 'Remove from Comparison' : 'Add to Comparison'}
+                </BaseButton>
               </div>
             ))}
+          </div>
+
+          <div className={styles.comparisonTray} aria-live="polite">
+            <div>
+              <strong>Comparison tray ({selectedPhotoIds.length}/2)</strong>
+              <p>{comparisonFeedback}</p>
+            </div>
+            <BaseButton variant="primary" onClick={runPhotoComparison} disabled={selectedPhotoIds.length !== 2}>
+              Test Capture-Method Difference
+            </BaseButton>
           </div>
         </section>
       )}
@@ -355,7 +432,7 @@ export const PlayerObservationCase: React.FC = () => {
                   <div className={styles.routineContent}>
                     <span className={styles.routineLabel}>{step.label}</span>
                     <span className={styles.routineDesc}>{step.description}</span>
-                    {step.contradictionHint && (
+                    {step.contradictionHint && (accountsReviewed || hintLevel >= 2) && (
                       <span className="type-small" style={{ color: 'var(--accent-warning)' }}>
                         ★ Note: {step.contradictionHint}
                       </span>
@@ -372,6 +449,11 @@ export const PlayerObservationCase: React.FC = () => {
               );
             })}
           </ul>
+          <p className={routineIsValid ? styles.validFinding : styles.pendingFinding} aria-live="polite">
+            {routineIsValid
+              ? 'Routine hypothesis recorded: one efficiency claim conflicts with the repeated kitchen loop.'
+              : 'Mark exactly one step as the fabricated addition. The authentic routine remains inefficient.'}
+          </p>
         </section>
       )}
 
@@ -419,6 +501,14 @@ export const PlayerObservationCase: React.FC = () => {
           </p>
 
           <div className={styles.decisionSection}>
+            <div className={styles.readinessList} aria-label="Investigation readiness">
+              <span>{comparisonRecorded ? '✓' : '○'} Capture methods compared</span>
+              <span>{routineIsValid ? '✓' : '○'} Routine contradiction identified</span>
+              <span>{accountsReviewed ? '✓' : '○'} Account histories reviewed</span>
+            </div>
+            {!investigationReady && (
+              <p className={styles.pendingFinding}>A public accusation requires all three evidence checks. Deferring judgment remains available.</p>
+            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               <div style={{ padding: 'var(--space-3)', backgroundColor: 'var(--bg-paper)', border: '1px solid var(--line-subtle)', borderRadius: 'var(--radius-4)' }}>
                 <h3 className="type-h3">Option A: Accuse AUNTIE_STATIC</h3>
@@ -429,7 +519,7 @@ export const PlayerObservationCase: React.FC = () => {
                   <BaseButton
                     variant="primary"
                     onClick={() => setShowConfirmAccusation('AUNTIE_STATIC')}
-                    disabled={isCaseResolved}
+                    disabled={isCaseResolved || isWrongAccusation || !investigationReady}
                   >
                     Accuse AUNTIE_STATIC of Replacement
                   </BaseButton>
@@ -445,11 +535,19 @@ export const PlayerObservationCase: React.FC = () => {
                   <BaseButton
                     variant="danger"
                     onClick={() => setShowConfirmAccusation('neverlookstraight')}
-                    disabled={isCaseResolved}
+                    disabled={isCaseResolved || isWrongAccusation || !investigationReady}
                   >
                     Accuse neverlookstraight of Surveillance
                   </BaseButton>
                 </div>
+              </div>
+
+              <div className={styles.deferDecision}>
+                <h3 className="type-h3">Insufficient evidence</h3>
+                <p className="type-body">Record no accusation. The case remains open and archived account history is released for review.</p>
+                <BaseButton onClick={handleDeferJudgment} disabled={isCaseResolved || isWrongAccusation}>
+                  I Do Not Know Yet
+                </BaseButton>
               </div>
             </div>
           </div>

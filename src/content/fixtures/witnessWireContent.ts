@@ -111,7 +111,7 @@ export const WITNESS_WIRE_IMAGES: WireImageRecord[] = [
   {
     id: 'img_case_06_centered',
     filename: 'centered_subject_closeup.jpg',
-    title: 'Direct Subject Observation (Uploaded Later)',
+    title: 'Frame 06 — Direct Subject Observation',
     timestamp: '02:31:00 (Averaged)',
     cameraGeometry: 'Direct focal center, 0° occlusion, standard human eye-level lens',
     edgeOcclusion: false,
