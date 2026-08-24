@@ -1,0 +1,47 @@
+/* Fluid Typography Scale — The Other Users */
+
+.type-display {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.type-h1 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.type-h2 {
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.type-h3 {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.type-body {
+  font-size: 1rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.type-small {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.type-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}

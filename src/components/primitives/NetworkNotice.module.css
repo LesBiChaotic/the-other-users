@@ -1,0 +1,48 @@
+.notice {
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--bg-paper);
+  border-bottom: 1px solid var(--line-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: 0.875rem;
+}
+
+.warning {
+  border-left: 3px solid var(--accent-warning);
+  background-color: rgba(140, 55, 60, 0.08);
+}
+
+.permission {
+  border-left: 3px solid var(--accent-permission);
+  background-color: rgba(106, 90, 37, 0.08);
+}
+
+.network {
+  border-left: 3px solid var(--accent-network);
+  background-color: rgba(35, 102, 100, 0.08);
+}
+
+.message {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.dismissButton {
+  background: none;
+  border: none;
+  padding: var(--space-1) var(--space-2);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.dismissButton:focus-visible {
+  outline: 2px solid var(--focus);
+}

@@ -1,0 +1,65 @@
+/* Layout & Grid Law — The Other Users */
+
+:root {
+  --viewport-gutter: var(--space-4); /* 16px on mobile */
+  --measure-prose: 65ch;
+  --shell-max: 1440px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --viewport-gutter: var(--space-5); /* 24px on tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --viewport-gutter: var(--space-6); /* 32px on desktop */
+  }
+}
+
+.layout-shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--viewport-gutter);
+  padding-right: var(--viewport-gutter);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-prose {
+  max-width: var(--measure-prose);
+}
+
+.layout-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.layout-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.layout-separator {
+  height: 1px;
+  background-color: var(--line-subtle);
+  border: none;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.layout-emphasis-line {
+  height: 2px;
+  background-color: var(--line-emphasis);
+  border: none;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}

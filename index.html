@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="The Other Users — Palinode Network" />
+    <title>Palinode // The Other Users</title>
+    <script>
+      (function() {
+        try {
+          // Pre-hydration Theme sync
+          const storedTheme = localStorage.getItem('palinode_theme');
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = storedTheme === 'light' ? 'light' : (storedTheme === 'dark' ? 'dark' : (prefersDark ? 'dark' : 'light'));
+          document.documentElement.setAttribute('data-theme', theme);
+          
+          // Pre-hydration Motion sync
+          const storedMotion = localStorage.getItem('palinode_motion');
+          const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const reducedMotion = storedMotion === 'reduced' || (storedMotion === null && prefersReducedMotion);
+          if (reducedMotion) {
+            document.documentElement.classList.add('reduced-motion');
+          } else {
+            document.documentElement.classList.remove('reduced-motion');
+          }
+        } catch (e) {
+          console.warn('Pre-hydration preferences load fallback', e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/app/App.tsx"></script>
+  </body>
+</html>
