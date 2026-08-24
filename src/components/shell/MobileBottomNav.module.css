@@ -3,8 +3,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 56px;
-  background-color: var(--bg-paper);
+  min-height: 64px;
+  background-color: var(--paper-translucent);
+  backdrop-filter: blur(18px);
   border-top: 1px solid var(--line-subtle);
   display: flex;
   align-items: center;
@@ -29,7 +30,9 @@
   gap: 2px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: .02em;
   font-weight: 500;
   min-width: var(--touch-target-min);
   background: none;
@@ -57,14 +60,14 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 20%;
-  right: 20%;
+  left: 34%;
+  right: 34%;
   height: 2px;
   background-color: var(--accent-network);
 }
 
 .icon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
