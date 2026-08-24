@@ -20,7 +20,7 @@ export interface GlobalShellProps {
 export const GlobalShell: React.FC<GlobalShellProps> = ({ children }) => {
   const location = useLocation();
   // On public invitation landing (/), show a clean distraction-free frame without bottom nav/rail
-  const isPublicLanding = location.pathname === '/' || location.pathname === '/verify';
+  const isPublicLanding = ['/', '/verify', '/accessibility'].includes(location.pathname);
 
   if (isPublicLanding) {
     return (
