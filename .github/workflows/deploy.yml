@@ -41,6 +41,12 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # This repository currently also has GitHub's legacy branch Pages builder enabled.
+      # Let that raw-source deployment finish first so this compiled Vite artifact wins.
+      # Once Pages > Build and deployment > Source is set to "GitHub Actions", remove this step.
+      - name: Wait for legacy Pages deployment
+        run: sleep 30
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
