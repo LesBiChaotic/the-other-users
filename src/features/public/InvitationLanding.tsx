@@ -28,37 +28,37 @@ export const InvitationLanding: React.FC = () => {
 
   return (
     <article className={styles.container}>
-      <header>
-        <span className={styles.kicker}>PALINODE // RECOVERY DISPATCH</span>
-        <h1 className={styles.title}>{PUBLIC_INVITATION_CONTENT.title}</h1>
-      </header>
+      <div className={styles.dispatchRail} aria-hidden="true">
+        <span>RECOVERY / 00</span><i /><span>UNROUTED ORGANISM</span>
+      </div>
 
-      <p className={styles.lead}>{PUBLIC_INVITATION_CONTENT.lead}</p>
+      <div className={styles.editorialColumn}>
+        <header className={styles.heroHeader}>
+          <span className={styles.kicker}>PALINODE · RECOVERY DISPATCH 00.1</span>
+          <h1 className={styles.title}>{PUBLIC_INVITATION_CONTENT.title}</h1>
+          <p className={styles.lead}>{PUBLIC_INVITATION_CONTENT.lead}</p>
+        </header>
 
-      <section className={styles.disclosureSection} aria-label="Privacy and Content Disclosures">
-        <p className={styles.disclosureText}>
-          {PUBLIC_INVITATION_CONTENT.privacyDisclosure}
-        </p>
-        <p className={styles.disclosureText} style={{ fontStyle: 'italic' }}>
-          {PUBLIC_INVITATION_CONTENT.contentWarningSummary}
-        </p>
-      </section>
+        <section className={styles.disclosureSection} aria-label="Privacy and Content Disclosures">
+          <span className={styles.sectionIndex}>TRANSLATION NOTICE</span>
+          <p className={styles.disclosureText}>{PUBLIC_INVITATION_CONTENT.privacyDisclosure}</p>
+          <p className={styles.warningText}>{PUBLIC_INVITATION_CONTENT.contentWarningSummary}</p>
+        </section>
 
-      <section className={styles.actionsSection} aria-label="Invitation Responses">
-        <BaseButton variant="primary" onClick={handleAccept}>
-          {PUBLIC_INVITATION_CONTENT.actionAccept}
-        </BaseButton>
+        <section className={styles.actionsSection} aria-label="Invitation Responses">
+          <BaseButton variant="primary" onClick={handleAccept}>{PUBLIC_INVITATION_CONTENT.actionAccept}</BaseButton>
+          <BaseButton onClick={handleDecline}>{PUBLIC_INVITATION_CONTENT.actionDecline}</BaseButton>
+          <Link to="/accessibility" className={styles.settingsLink}>{PUBLIC_INVITATION_CONTENT.actionSettings}<span aria-hidden="true">↗</span></Link>
+        </section>
+      </div>
 
-        <BaseButton onClick={handleDecline}>
-          {PUBLIC_INVITATION_CONTENT.actionDecline}
-        </BaseButton>
-
-        <Link to="/accessibility" style={{ textDecoration: 'none' }}>
-          <BaseButton>
-            {PUBLIC_INVITATION_CONTENT.actionSettings}
-          </BaseButton>
-        </Link>
-      </section>
+      <aside className={styles.specimenField} aria-hidden="true">
+        <div className={styles.fieldLabel}>PROVISIONAL BODY / SIGNAL RETURN</div>
+        <div className={styles.orbit}><i /><i /><i /></div>
+        <div className={styles.bodyTrace}><span /><span /><span /></div>
+        <div className={styles.readout}><b>01</b><span>BOUNDARY<br />UNRESOLVED</span></div>
+        <p>We found your account before we found your species.</p>
+      </aside>
     </article>
   );
 };
