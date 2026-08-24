@@ -1,0 +1,117 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 40;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn var(--transition-fast);
+}
+
+.drawer {
+  width: 85%;
+  max-width: 320px;
+  height: 100%;
+  background-color: var(--bg-paper);
+  border-left: 1px solid var(--line-subtle);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  box-sizing: border-box;
+  overflow-y: auto;
+  gap: var(--space-4);
+  animation: slideIn var(--transition-base);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.closeButton {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-4);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--focus);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectionHeading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.linkList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--touch-target-min);
+  border-radius: var(--radius-4);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.drawerLink:hover {
+  background-color: var(--bg-surface);
+}
+
+.drawerLink:focus-visible {
+  outline: 2px solid var(--focus);
+}
+
+.statusTag {
+  font-size: 0.7rem;
+  font-family: ui-monospace, monospace;
+  padding: 2px 6px;
+  border-radius: var(--radius-4);
+  background-color: var(--bg-surface);
+  color: var(--text-muted);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

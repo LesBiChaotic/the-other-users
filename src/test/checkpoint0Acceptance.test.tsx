@@ -37,7 +37,7 @@ import { useGameStore } from '../domain/state/useGameStore';
 import { PostSchema } from '../domain/schemas/content.schema';
 import { analyzeContentIntegrity } from '../domain/content/contentAnalyzer';
 import { SAMPLE_SPECIES, SAMPLE_POSTS, SAMPLE_EVIDENCE, SAMPLE_PUZZLE } from '../content/fixtures/sampleContent';
-import { FoundationHarnessView } from '../app/routes';
+import { InvitationLanding } from '../features/public/InvitationLanding';
 import { MemoryRouter } from 'react-router';
 
 describe('Checkpoint 0 Acceptance Tests (Order 1–10)', () => {
@@ -332,7 +332,7 @@ describe('Checkpoint 0 Acceptance Tests (Order 1–10)', () => {
     const { container } = render(
       <MemoryRouter initialEntries={['/']}>
         <div style={{ width: '360px', padding: '16px', boxSizing: 'border-box' }}>
-          <FoundationHarnessView />
+          <InvitationLanding />
         </div>
       </MemoryRouter>
     );
@@ -343,7 +343,7 @@ describe('Checkpoint 0 Acceptance Tests (Order 1–10)', () => {
 
     // Check that layout wrapper exists and renders without broken layout
     expect(container).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Invitation Landing/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Species Verification Inconclusive/i })).toBeInTheDocument();
   });
 
   // TEST 10: Runtime rejection of an invalid content fixture

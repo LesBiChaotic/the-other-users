@@ -1,0 +1,376 @@
+/**
+ * Production Content Pack — Checkpoint 1 Canonical Seed Fixtures
+ * 
+ * Contains verified production copy from Master Concept Bible and Production Content Pack.
+ * IDs are canonical and must not be altered.
+ */
+
+import {
+  User,
+  Message,
+  EvidenceItem,
+  CommunityId,
+} from '../../domain/types/content';
+
+export const PUBLIC_INVITATION_CONTENT = {
+  id: 'PUB-001',
+  title: 'Species Verification Inconclusive',
+  lead: 'Your account has been approved. Species verification: inconclusive. Please correct your anatomy before continuing.',
+  privacyDisclosure:
+    'This service will not request your legal name, location, camera, microphone, contacts, or files. The verification process observes only the choices and navigation you make inside this page. You may decline behavioral classification and continue with reduced personalization.',
+  contentWarningSummary:
+    'Content Notice: The Palinode network contains themes of anatomical instability, sensory displacement, impersonation, institutional containment, and nonhuman social conflict. No jump scares or strobe effects.',
+  actionAccept: 'Accept Inconclusive Classification',
+  actionDecline: 'Decline Verification (Standard Human Profile)',
+  actionSettings: 'Configure Sensory & Accessibility Preferences',
+};
+
+export const VERIFICATION_STEPS = {
+  p00_entrances: {
+    id: 'VER-001',
+    title: 'Permitted Entrances',
+    instruction:
+      'Select every entrance you currently have permission to cross. Permission must be specific, current, and revocable. Shape alone does not make a threshold.',
+    options: [
+      { id: 'ent_front_door', label: 'A residential front door unlocked from the inside', permitted: true, nonhumanInterpretation: 'Domestic threshold with active occupant consent.' },
+      { id: 'ent_window_dark', label: 'A dark window on an unlit second floor', permitted: false, nonhumanInterpretation: 'Uninvited void; crossing constitutes hostile breach.' },
+      { id: 'ent_healed_wound', label: 'A healed incision on your own forearm', permitted: true, nonhumanInterpretation: 'Internal boundary reconciled by host organism.' },
+      { id: 'ent_mirror_public', label: 'A public restroom mirror facing another mirror', permitted: false, nonhumanInterpretation: 'Recursive corridor; unmonitored transit hazard.' },
+      { id: 'ent_spoken_name', label: 'A nickname given to you by someone who has forgotten it', permitted: false, nonhumanInterpretation: 'Expired nomination; phonetic trespass.' },
+      { id: 'ent_browser_tab', label: 'An open browser tab left inactive for eleven days', permitted: true, nonhumanInterpretation: 'Dormant cache allocated to your session.' },
+    ],
+  },
+  occupancy: {
+    id: 'VER-002',
+    title: 'Occupancy',
+    instruction: 'How many individuals currently occupy your body?',
+    options: [
+      { id: 'occ_one', label: 'One.', count: 1, trait: 'Singular Host' },
+      { id: 'occ_more', label: 'More than one.', count: 3, trait: 'Colonial Occupancy' },
+      { id: 'occ_changing', label: 'The number changes.', count: 0, trait: 'Transient Permeability' },
+      { id: 'occ_disputed', label: 'Occupancy is not the same as personhood.', count: 1, trait: 'Jurisdictional Disagreement' },
+      { id: 'occ_decline', label: 'Decline to classify.', count: 1, trait: 'Unregistered Density' },
+    ],
+  },
+  p01_unobserved: {
+    id: 'VER-003',
+    title: 'Behavior While Unobserved',
+    instruction:
+      'Demonstrate one behavior your species performs while unobserved. No response field is provided. You may wait, navigate, request help, change display settings, or decline. Your choice will be interpreted as behavior, not correctness.',
+    disclosure:
+      'Observation is restricted entirely to the active browser tab. No device sensors, network telemetry, or personal data are read.',
+    declineOption: 'Decline behavioral observation and accept provisional domestic status.',
+  },
+  provisional_result: {
+    id: 'VER-004',
+    title: 'Provisional Classification Synthesized',
+    classification: 'DOMESTIC WITNESS',
+    habitat: 'Occupied structures, electrical margins, dormant thresholds',
+    feedingBehavior: 'Unconfirmed (Atmospheric Noise / Habitual Routines)',
+    imitationRisk: 'Elevated (Inconsistent Contradiction Profile)',
+    humanResemblance: 'Self-reported (Indeterminate Witnessed Shape)',
+    closingNotice:
+      'This profile is a working hypothesis. Repeated acceptance may increase its accuracy and its authority. Do not correct your anatomy unless you understand what the correction authorizes.',
+  },
+};
+
+export const PALINODE_HUB_DISPATCHES = [
+  {
+    id: 'HUB-000',
+    title: 'Welcome to Palinode',
+    chapter: 0,
+    author: 'Network Protocol Authority',
+    body: 'Your translation layer is active. Some pages may describe senses your device cannot represent. Equivalent text will appear where available. Do not correct your species unless you understand what the correction authorizes.',
+    timestamp: 'Protocol Inception',
+    networkCondition: 'Stable / Sensory Packets Active',
+  },
+  {
+    id: 'HUB-101',
+    title: 'Network Condition: Unseasonably Legible',
+    chapter: 1,
+    author: 'Telemetry & Alignment Guild',
+    body: 'Cross-community translation accuracy has risen 11.4% without an approved protocol update. Users are advised to retain local terminology and report interfaces that feel easier than they remember.',
+    timestamp: 'Current Session',
+    networkCondition: 'Legibility Elevating (+11.4%)',
+  },
+  {
+    id: 'HUB-201',
+    title: 'Three Communities Dispute the Shape of a Door',
+    chapter: 1,
+    author: 'Threshold Moderation Notice',
+    body: 'Threshold moderators have closed discussion after 4,118 replies. The door remains open, locked, invited, and municipally owned. These conditions are not considered contradictory.',
+    timestamp: '2h ago',
+    networkCondition: 'Boundary Disputed',
+  },
+  {
+    id: 'HUB-301',
+    title: 'Human Observation Reminder',
+    chapter: 1,
+    author: 'Human Observation Guild',
+    body: 'Humans may repeat actions without territorial, courtship, ritual, or medical significance. “They opened the cold cabinet and selected nothing” is not sufficient cause for emergency response.',
+    timestamp: '5h ago',
+    networkCondition: 'Normal Domestic Drift',
+  },
+  {
+    id: 'HUB-401',
+    title: 'Missing-User Notice',
+    chapter: 2,
+    author: 'Moderator Dispatch',
+    body: 'If a familiar account becomes easier to understand, do not congratulate it immediately. Preserve private disagreements. Ask a question whose answer you have previously disliked.',
+    timestamp: 'Recent',
+    networkCondition: 'Substitution Alert',
+  },
+  {
+    id: 'HUB-501',
+    title: 'Interface Standardization Pilot',
+    chapter: 3,
+    author: 'Standard Human Project Secretariat',
+    body: 'Several communities have volunteered for universal labeling. Participation is reversible. Reports that the reversal control has been removed are under review by the same pilot.',
+    timestamp: 'Archived',
+    networkCondition: 'Homogenization Active',
+  },
+];
+
+export const CORE_USER_PROFILES: User[] = [
+  {
+    id: 'usr_ilyr',
+    handle: 'MOURNINGSTAR',
+    speciesId: 'sp_threshold',
+    pronouns: 'they/them',
+    voiceGuidelines: 'Procedural precision, dry irritation, threshold architecture metaphors. Never soothing.',
+    communityIds: ['hub', 'menagerie', 'wire'],
+    isNamedWitness: true,
+    revisions: [
+      {
+        id: 'rev_ily_01',
+        timestamp: '1989-04-12T00:00:00Z',
+        chapter: 0,
+        speciesHypothesis: 'Lintelkin',
+        anatomySummary: 'Senior cross-community moderator. Standing consent required at all threshold planes.',
+        changedFields: ['anatomySummary', 'standingConsent'],
+      },
+    ],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_sof',
+    handle: 'soft_error',
+    speciesId: 'sp_borrowface',
+    pronouns: 'she/her',
+    voiceGuidelines: 'Moltinghouse advice moderator. Uses double-comma worry tell in authentic state.',
+    communityIds: ['molt'],
+    isNamedWitness: true,
+    revisions: [
+      {
+        id: 'rev_sof_01',
+        timestamp: '2021-09-14T00:00:00Z',
+        chapter: 0,
+        speciesHypothesis: 'Borrowface',
+        anatomySummary: 'Bad at closure,, excellent at contour repair. Will not tell you an unsafe disguise makes you ugly.',
+        changedFields: ['contourRepair'],
+      },
+    ],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_fiv',
+    handle: 'FIVE_OF_US',
+    speciesId: 'sp_handful',
+    pronouns: 'plural they',
+    voiceGuidelines: 'Five workers, one invoice, currently one opinion short. Internal voice shifts.',
+    communityIds: ['molt'],
+    isNamedWitness: true,
+    revisions: [],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_und',
+    handle: 'underplatform_9',
+    speciesId: 'sp_echo_clerk',
+    pronouns: 'it/its',
+    voiceGuidelines: 'Belowline route auditor. Distinguishes silence from zero.',
+    communityIds: ['below'],
+    isNamedWitness: true,
+    revisions: [],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_mrs',
+    handle: 'MRS_COLD',
+    speciesId: 'sp_cold_oracle',
+    pronouns: 'she/her in translation',
+    voiceGuidelines: 'Cold cabinet oracle. Knows what households run out of and when.',
+    communityIds: ['wire'],
+    isNamedWitness: true,
+    revisions: [],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_nvr',
+    handle: 'neverlookstraight',
+    speciesId: 'sp_peripheral_friend',
+    pronouns: 'they/them',
+    voiceGuidelines: 'Photographer for events nobody attends directly. Peripheral observation only.',
+    communityIds: ['wire'],
+    isNamedWitness: true,
+    revisions: [],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_cal',
+    handle: 'calmly_complete',
+    speciesId: 'sp_expectation_wasp',
+    pronouns: 'it/its',
+    voiceGuidelines: 'Sincere, theological, restful. Difference is work; completion is rest.',
+    communityIds: ['communion', 'vesper'],
+    isNamedWitness: true,
+    revisions: [],
+    replacementState: 'normal',
+  },
+  {
+    id: 'usr_ter',
+    handle: 'TermsMayApply',
+    speciesId: 'sp_termskeeper',
+    pronouns: 'it/its',
+    voiceGuidelines: 'Polite, contractual, predatory without random glitch speech.',
+    communityIds: ['vesper', 'market'],
+    isNamedWitness: false,
+    revisions: [],
+    replacementState: 'normal',
+  },
+];
+
+export const INITIAL_MESSAGES: Message[] = [
+  {
+    id: 'MSG-001',
+    threadId: 'thread_mourningstar',
+    senderId: 'usr_ilyr',
+    senderSource: 'authentic_ilyr',
+    timestamp: 'Just now',
+    body: "Don’t correct it. They reject humans. Something on this network has already learned how to pass.",
+    unlockCondition: { type: 'gateReached', gateId: 'G0' },
+    replies: [
+      {
+        id: 'rep_msg_001_1',
+        text: 'Who are you, and why did my recovery email deliver here?',
+        stateWrites: {
+          flags: { ilyr_asked_identity: true },
+          relationshipChange: { userId: 'usr_ilyr', delta: 5 },
+        },
+      },
+      {
+        id: 'rep_msg_001_2',
+        text: 'What do you mean "learned how to pass"?',
+        stateWrites: {
+          flags: { ilyr_asked_threat: true },
+          relationshipChange: { userId: 'usr_ilyr', delta: 5 },
+        },
+      },
+    ],
+    accessibility: {
+      altText: 'Private communication from moderator MOURNINGSTAR warning against anatomical correction.',
+    },
+  },
+];
+
+export const INITIAL_EVIDENCE: EvidenceItem[] = [
+  {
+    id: 'EV-001',
+    title: 'Malformed Recovery Notice',
+    provenance: 'Palinode Account Recovery Queue',
+    communityId: 'hub',
+    chapter: 0,
+    representations: {
+      primaryText:
+        'Your account has been approved. Species verification: inconclusive. Please correct your anatomy before continuing.',
+      sensoryDescription: 'Faint electromagnetic hum accompanying the text packet.',
+      accessibility: {
+        altText: 'System notice stating species verification is inconclusive.',
+      },
+    },
+    contradictionLinks: [],
+    targetCases: ['case_player_origin'],
+  },
+];
+
+export const COMMUNITIES_LIST: Array<{
+  id: CommunityId;
+  name: string;
+  speciesCulture: string;
+  spatialMetaphor: string;
+  status: 'active' | 'gated' | 'pressurized' | 'classified';
+  gateId: string;
+  route: string;
+  teaser: string;
+}> = [
+  {
+    id: 'wire',
+    name: 'Witness Wire',
+    speciesCulture: 'Human Observation Guild & Routine Keepers',
+    spatialMetaphor: 'Annotated observation stream with temporal marks',
+    status: 'active',
+    gateId: 'G0',
+    route: '/wire',
+    teaser: 'Observation of ordinary human domestic habits, appliances, and courtship rituals.',
+  },
+  {
+    id: 'molt',
+    name: 'Moltinghouse',
+    speciesCulture: 'Borrowfaces, Handfuls & Shapeshifters',
+    spatialMetaphor: 'Stacked skin layers & revision archives',
+    status: 'gated',
+    gateId: 'G1',
+    route: '/molt',
+    teaser: 'Peer advice on contour repair, host pet negotiation, and labor policies.',
+  },
+  {
+    id: 'below',
+    name: 'Belowline',
+    speciesCulture: 'Echo Clerks, Knucklerails & Underfolk',
+    spatialMetaphor: 'Subterranean pressure topology map',
+    status: 'gated',
+    gateId: 'G2',
+    route: '/below',
+    teaser: 'Transit manifests and vibration loads crossing beneath surface cities.',
+  },
+  {
+    id: 'vesper',
+    name: 'Vesper',
+    speciesCulture: 'Apartment Choirs & Symbionts',
+    spatialMetaphor: 'Compatibility constellation & boundary fields',
+    status: 'gated',
+    gateId: 'G3',
+    route: '/vesper',
+    teaser: 'Negotiated intimacy and body-sharing agreements across incompatible species.',
+  },
+  {
+    id: 'market',
+    name: 'Pale Market',
+    speciesCulture: 'Recordborn & Kindly Thieves',
+    spatialMetaphor: 'Street ledger with provenance lines',
+    status: 'gated',
+    gateId: 'G4',
+    route: '/market',
+    teaser: 'Trade of nonmaterial assets: unused names, 30 minutes of privacy, and voice fragments.',
+  },
+  {
+    id: 'communion',
+    name: 'Communion',
+    speciesCulture: 'Expectation Wasps & Convergence Believers',
+    spatialMetaphor: 'Liturgical column & communal annotations',
+    status: 'gated',
+    gateId: 'G4',
+    route: '/communion',
+    teaser: 'Sermons, testimonies, and litanies celebrating relief from private difference.',
+  },
+  {
+    id: 'menagerie',
+    name: 'The Menagerie',
+    speciesCulture: 'Directorate Containment Operations',
+    spatialMetaphor: 'Facility section drawing & attached sensor bands',
+    status: 'classified',
+    gateId: 'G5',
+    route: '/menagerie',
+    teaser: 'Public specimen registry and classified habitat containment records.',
+  },
+];

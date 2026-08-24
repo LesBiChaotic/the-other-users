@@ -1,0 +1,109 @@
+.rail {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .rail {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    height: 100vh;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-paper);
+    border-right: 1px solid var(--line-subtle);
+    padding: var(--space-5) var(--space-4);
+    box-sizing: border-box;
+    gap: var(--space-6);
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.brandMark {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent-network);
+}
+
+.brandTagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-4);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: var(--touch-target-min);
+  box-sizing: border-box;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.navLink:hover {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.navLink:focus-visible {
+  outline: 2px solid var(--focus);
+}
+
+.active {
+  background-color: var(--bg-surface);
+  color: var(--accent-network);
+  font-weight: 600;
+  border-left: 3px solid var(--accent-network);
+}
+
+.icon {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.badge {
+  margin-left: auto;
+  background-color: var(--accent-warning);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line-subtle);
+}
+
+.statusIndicator {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

@@ -1,0 +1,107 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.stepIndicator {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-permission);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.stepTitle {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.instruction {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.optionItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  min-height: var(--touch-target-min);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.optionItem:hover {
+  background-color: var(--bg-paper);
+  border-color: var(--line-emphasis);
+}
+
+.optionItem input {
+  margin-top: 4px;
+  accent-color: var(--accent-network);
+}
+
+.optionLabel {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.optionSubtext {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.resultPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-top: 2px solid var(--line-emphasis);
+  border-bottom: 2px solid var(--line-emphasis);
+}
+
+.resultField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldKey {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.fieldValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.navigationSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}

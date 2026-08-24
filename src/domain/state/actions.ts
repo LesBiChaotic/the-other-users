@@ -310,12 +310,20 @@ export function markEvidenceReducer(
   marked: boolean
 ): { nextState: RootState; event?: GameEvent } {
   const current = state.evidenceState[evidenceId];
-  if (!current || current.marked === marked) {
+  if (current && current.marked === marked) {
     return { nextState: state };
   }
 
   const nextState = produce(state, (draft) => {
-    draft.evidenceState[evidenceId].marked = marked;
+    const existing = draft.evidenceState[evidenceId] ?? {
+      discovered: true,
+      inspected: true,
+      marked: false,
+      compared: false,
+      committedToCases: [],
+    };
+    existing.marked = marked;
+    draft.evidenceState[evidenceId] = existing;
   });
 
   const event = createGameEvent(

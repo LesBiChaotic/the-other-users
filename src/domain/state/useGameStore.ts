@@ -123,10 +123,18 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         });
       } else {
         // Fresh start: capture initial Chapter 0 snapshot
-        const rootState = get();
+        const rootState = createInitialRootState();
         const initialSnapshot = createCheckpointSnapshot(rootState, 'Chapter 0 Inception');
         set({
+          ...rootState,
           snapshots: [initialSnapshot],
+          eventLog: new EventLog(),
+          uiState: {
+            navigationDrawerOpen: false,
+            activeComparisonEvidenceIds: [],
+            draftNotes: {},
+            scrollRestoration: {},
+          },
           isHydrated: true,
           hydrationError: null,
         });

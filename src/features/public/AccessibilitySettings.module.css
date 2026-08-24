@@ -1,0 +1,86 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.headingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.kicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--accent-network);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.controlRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--touch-target-min);
+}
+
+.controlLabel {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.controlSubtext {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.toggleInput {
+  width: 48px;
+  height: 28px;
+  accent-color: var(--accent-network);
+  cursor: pointer;
+}
+
+.radioGroup {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.95rem;
+  cursor: pointer;
+  min-height: var(--touch-target-min);
+  padding: 0 var(--space-2);
+}
+
+.sliderInput {
+  width: 100%;
+  max-width: 280px;
+  accent-color: var(--accent-network);
+}

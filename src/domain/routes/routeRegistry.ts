@@ -53,9 +53,9 @@ export const ROUTE_REGISTRY: Record<string, RouteMetadata> = {
   '/evidence': {
     path: '/evidence',
     surfaceName: 'Evidence & Contradiction Board',
-    chapterRequirement: 1,
-    gateId: 'G1',
-    unlockCondition: { type: 'gateReached', gateId: 'G1' },
+    chapterRequirement: 0,
+    gateId: 'G0',
+    unlockCondition: { type: 'gateReached', gateId: 'G0' },
     fallbackPath: '/home',
     deniedMessage: 'Evidence ledger unsealed only after initial witness contact.',
   },

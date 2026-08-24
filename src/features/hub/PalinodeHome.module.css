@@ -1,0 +1,120 @@
+.container {
+  max-width: var(--measure-prose);
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.networkBanner {
+  padding: var(--space-3) 0;
+  border-bottom: 2px solid var(--line-emphasis);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.bannerKicker {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--accent-permission);
+  letter-spacing: 0.05em;
+}
+
+.bannerCondition {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.primaryDispatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dispatchMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.8rem;
+  font-family: ui-monospace, monospace;
+  color: var(--text-muted);
+}
+
+.dispatchTitle {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dispatchBody {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.feedSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sectionHeader {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+}
+
+.feedItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-subtle);
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.itemAuthor {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent-network);
+}
+
+.itemTime {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.itemTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.itemBody {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
