@@ -54,6 +54,12 @@ import { MenagerieOps } from '../features/menagerie/MenagerieOps';
 import { EnclosureDetail } from '../features/menagerie/EnclosureDetail';
 import { IlyrThresholdProcedure } from '../features/menagerie/IlyrThresholdProcedure';
 
+// Checkpoint 6: Convergence Finale & Epilogues
+import { ConvergenceStatus } from '../features/convergence/ConvergenceStatus';
+import { WitnessCounterModel } from '../features/convergence/WitnessCounterModel';
+import { FinalPermission } from '../features/convergence/FinalPermission';
+import { EpilogueView } from '../features/convergence/EpilogueView';
+
 export interface GuardedRouteProps {
   path: string;
   children: React.ReactNode;
@@ -134,6 +140,10 @@ const SURFACE_COMPONENTS: Record<string, React.ReactNode> = {
   '/menagerie/ops': <MenagerieOps />,
   '/menagerie/enclosure/:id': <EnclosureDetail />,
   '/menagerie/threshold': <IlyrThresholdProcedure />,
+  '/convergence': <ConvergenceStatus />,
+  '/convergence/witnesses': <WitnessCounterModel />,
+  '/convergence/permission': <FinalPermission />,
+  '/epilogue/:ending': <EpilogueView />,
 };
 
 export const routes: RouteObject[] = Object.keys(ROUTE_REGISTRY).map((path) => {

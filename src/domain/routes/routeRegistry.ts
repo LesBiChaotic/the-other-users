@@ -273,6 +273,33 @@ export const ROUTE_REGISTRY: Record<string, RouteMetadata> = {
     fallbackPath: '/home',
     deniedMessage: 'Assembly status unavailable: Final convergence not initiated.',
   },
+  '/convergence/witnesses': {
+    path: '/convergence/witnesses',
+    surfaceName: 'Living Witness Counter-Model',
+    chapterRequirement: 6,
+    gateId: 'G6',
+    unlockCondition: { type: 'gateReached', gateId: 'G6' },
+    fallbackPath: '/convergence',
+    deniedMessage: 'Witness counter-model restricted.',
+  },
+  '/convergence/permission': {
+    path: '/convergence/permission',
+    surfaceName: 'The Final Permission Contract',
+    chapterRequirement: 6,
+    gateId: 'G6',
+    unlockCondition: { type: 'gateReached', gateId: 'G6' },
+    fallbackPath: '/convergence',
+    deniedMessage: 'Final permission contract restricted.',
+  },
+  '/epilogue/:ending': {
+    path: '/epilogue/:ending',
+    surfaceName: 'Epilogue Resolution',
+    chapterRequirement: 6,
+    gateId: 'G6',
+    unlockCondition: { type: 'gateReached', gateId: 'G6' },
+    fallbackPath: '/home',
+    deniedMessage: 'Epilogue unavailable before narrative completion.',
+  },
 };
 
 export function evaluateRouteGuard(path: string, ctx: ConditionContext): RouteGuardEvaluation {
