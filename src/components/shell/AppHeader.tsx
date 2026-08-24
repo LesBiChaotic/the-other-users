@@ -18,14 +18,18 @@ export const AppHeader: React.FC = () => {
 
   const routeMeta = ROUTE_REGISTRY[location.pathname];
   const surfaceTitle = routeMeta ? routeMeta.surfaceName : 'Palinode Network';
+  const isPreEntrySurface = ['/', '/verify', '/accessibility'].includes(location.pathname);
+  const brandTarget = isPreEntrySurface ? '/' : '/home';
 
-  const toggleTheme = () => {
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <header className={styles.header} role="banner">
-      <Link to="/home" className={styles.brandGroup} aria-label="Palinode Network Home">
+      <Link to={brandTarget} className={styles.brandGroup} aria-label="Palinode Network Home">
         <span className={styles.logoMark}><i aria-hidden="true" />PALINODE</span>
         <span className={styles.surfaceTitle} title={surfaceTitle}>
           {surfaceTitle}
