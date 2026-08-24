@@ -5,7 +5,7 @@
  * and identify the live biological footprint sensor pair (Pressure + Permission).
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router';
 import styles from './EnclosureDetail.module.css';
 import { ENCLOSURE_SENSOR_MATRICES_P14 } from '../../content/fixtures/menagerieContent';
@@ -31,10 +31,6 @@ export const EnclosureDetail: React.FC = () => {
     ENCLOSURE_SENSOR_MATRICES_P14[0];
 
   const isSolved = Boolean(puzzleState['p14_camera_that_never_blinks']?.status === 'solved' || gameState.flags['p14_solved']);
-
-  useEffect(() => {
-    discoverEvidence('EV-015', 'Menagerie Operations Sensor Matrix');
-  }, [discoverEvidence]);
 
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
@@ -68,6 +64,12 @@ export const EnclosureDetail: React.FC = () => {
       );
       setFlag('p14_solved', true);
       setFlag('synthetic_footage_proven', true);
+      discoverEvidence('EV-015', 'Menagerie live Pressure + Permission audit');
+      setFlag('menagerie_witness_roster', [
+        'usr_ilyr',
+        ...(gameState.flags['p05_solved'] && !gameState.flags['p05_false_report'] ? ['usr_fiv'] : []),
+        ...(gameState.flags['bond_sacrificed'] ? [] : ['usr_nvr']),
+      ].join('|'));
       advanceChapter(7);
     } else {
       ensurePuzzleActive('p14_camera_that_never_blinks');
@@ -84,6 +86,8 @@ export const EnclosureDetail: React.FC = () => {
     ensurePuzzleActive('p14_camera_that_never_blinks');
     setPuzzleStatus('p14_camera_that_never_blinks', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p14_solved', true);
+    setFlag('synthetic_footage_proven', true);
+    discoverEvidence('EV-015', 'Assisted Menagerie sensor audit');
     advanceChapter(7);
   };
 

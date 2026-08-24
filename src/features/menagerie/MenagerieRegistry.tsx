@@ -9,8 +9,8 @@ export const MenagerieRegistry: React.FC = () => {
   const gameState = useGameStore((s) => s.gameState);
   const isOpsUnlocked = Boolean(
     gameState.flags['archive_override'] ||
-    gameState.unlockedGates['G5'] ||
-    gameState.flags['menagerie_access_method']
+    (gameState.unlockedGates['G5'] &&
+      (gameState.flags['menagerie_access_method'] || gameState.flags['terms_exposed']))
   );
 
   return (
@@ -36,14 +36,14 @@ export const MenagerieRegistry: React.FC = () => {
           </span>
           <h2 className="type-h2">Enter Annex N Facility Operations</h2>
           <p className="type-body">
-            Authenticated via Action-Bound Pass. Inspect physical enclosure drawings,
+            Authenticated via {String(gameState.flags['menagerie_access_method'] || 'exposed TermsMayApply clause')}. Inspect physical enclosure drawings,
             audit synthetic camera feeds (P14), and execute Ilyr exit procedure (P15).
           </p>
         </Link>
       ) : (
         <div style={{ padding: 'var(--space-3)', backgroundColor: 'var(--bg-surface)', borderLeft: '3px solid var(--line-emphasis)', borderRadius: 'var(--radius-4)' }}>
           <span className="type-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            OPERATIONS LOCK: Requires Gate G5 (Sensory Triad & Pale Market pass assembly).
+            OPERATIONS LOCK: Requires both a committed Communion position and an invitation route or exposed TermsMayApply clause.
           </span>
         </div>
       )}

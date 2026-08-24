@@ -32,6 +32,8 @@ describe('Checkpoint 5 Menagerie Directorate', () => {
     store.unlockGate('G3');
     store.unlockGate('G4');
     store.unlockGate('G5');
+    store.setFlag('menagerie_access_method', 'action_pass');
+    store.setFlag('communion_stance', 'infiltrate');
     store.advanceChapter(6);
     store.updateProfile({
       handle: 'Domestic_Witness_01',
@@ -54,6 +56,14 @@ describe('Checkpoint 5 Menagerie Directorate', () => {
     expect(screen.getByText(/You cannot call the room empty and charge it rent\./i)).toBeInTheDocument();
     expect(screen.getByText(/Enclosure C-12 \/\/ Structural Anchor/i)).toBeInTheDocument();
     expect(screen.getByText(/The camera shows it sleeping while its back holds up the floor you walk on\./i)).toBeInTheDocument();
+  });
+
+  it('1b. Operations requires both G5 and an invitation or exposed clause', () => {
+    useGameStore.getState().setFlag('menagerie_access_method', false);
+    useGameStore.getState().setFlag('terms_exposed', false);
+    render(<MemoryRouter><MenagerieRegistry /></MemoryRouter>);
+    expect(screen.getByText(/OPERATIONS LOCK: Requires both/i)).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Access Operations Console/i })).not.toBeInTheDocument();
   });
 
   it('2. Operations Console renders facility section elevation and enclosure stations', () => {
@@ -102,6 +112,7 @@ describe('Checkpoint 5 Menagerie Directorate', () => {
 
   it('4. P15 Door Never Entered executes corrective admission to free Ilyr cleanly and unlocks G6', async () => {
     const user = userEvent.setup();
+    useGameStore.getState().setFlag('p14_solved', true);
     render(
       <MemoryRouter>
         <IlyrThresholdProcedure />
@@ -123,8 +134,18 @@ describe('Checkpoint 5 Menagerie Directorate', () => {
     expect(screen.getByText(/MOURNINGSTAR Released from Enclosure N-04/i)).toBeInTheDocument();
   });
 
+  it('4b. Ilyr procedure remains locked until synthetic footage is proven', () => {
+    render(<MemoryRouter><IlyrThresholdProcedure /></MemoryRouter>);
+    expect(screen.getByText(/PROCEDURE LOCKED:/i)).toBeInTheDocument();
+    for (const button of screen.getAllByRole('button', { name: /Execute This Exit Protocol/i })) {
+      expect(button).toBeDisabled();
+    }
+    expect(useGameStore.getState().evidenceState['EV-016']).toBeUndefined();
+  });
+
   it('5. P15 Compromised Terms route sets ilyr_ownership_compromised: true', async () => {
     const user = userEvent.setup();
+    useGameStore.getState().setFlag('p14_solved', true);
     render(
       <MemoryRouter>
         <IlyrThresholdProcedure />
@@ -143,6 +164,7 @@ describe('Checkpoint 5 Menagerie Directorate', () => {
 
   it('6. P14 / P15 Hint Escalation and Bypass paths', async () => {
     const user = userEvent.setup();
+    useGameStore.getState().setFlag('p14_solved', true);
     render(
       <MemoryRouter>
         <IlyrThresholdProcedure />

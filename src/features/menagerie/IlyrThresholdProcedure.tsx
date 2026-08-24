@@ -5,7 +5,7 @@
  * Resolves the legal contradiction of unlawful occupancy without inventing false consent.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import styles from './IlyrThresholdProcedure.module.css';
 import { ILYR_PROCEDURE_STEPS_P15 } from '../../content/fixtures/menagerieContent';
@@ -30,10 +30,6 @@ export const IlyrThresholdProcedure: React.FC = () => {
   const isSolved = Boolean(puzzleState['p15_door_never_entered']?.status === 'solved' || gameState.flags['p15_solved']);
   const isCompromised = gameState.flags['ilyr_ownership_compromised'] === true;
 
-  useEffect(() => {
-    discoverEvidence('EV-016', 'Threshold Moderation Procedural Log');
-  }, [discoverEvidence]);
-
   const ensurePuzzleActive = (puzzleId: string) => {
     const status = puzzleState[puzzleId]?.status ?? 'unseen';
     if (status === 'unseen') {
@@ -45,6 +41,7 @@ export const IlyrThresholdProcedure: React.FC = () => {
   };
 
   const handleExecuteProcedure = (stepId: string) => {
+    if (!gameState.flags['p14_solved'] && !gameState.flags['synthetic_footage_proven']) return;
     setSelectedStepId(stepId);
     ensurePuzzleActive('p15_door_never_entered');
 
@@ -59,6 +56,7 @@ export const IlyrThresholdProcedure: React.FC = () => {
       setFlag('p15_solved', true);
       setFlag('ilyr_freed', true);
       setFlag('ilyr_ownership_compromised', false);
+      discoverEvidence('EV-016', 'Ilyr witnessed corrective-admission exit');
       changeRelationship('usr_ilyr', 15);
       unlockGate('G6'); // Unlocks Convergence Finale
       advanceChapter(7);
@@ -73,6 +71,7 @@ export const IlyrThresholdProcedure: React.FC = () => {
       setFlag('p15_solved', true);
       setFlag('ilyr_freed', true);
       setFlag('ilyr_ownership_compromised', true);
+      discoverEvidence('EV-016', 'TermsMayApply-owned Ilyr exit procedure');
       changeRelationship('usr_ilyr', -10);
       unlockGate('G6');
       advanceChapter(7);
@@ -92,6 +91,7 @@ export const IlyrThresholdProcedure: React.FC = () => {
     setPuzzleStatus('p15_door_never_entered', 'bypassed', { assisted: true }, 'Assisted bypass used.');
     setFlag('p15_solved', true);
     setFlag('ilyr_freed', true);
+    discoverEvidence('EV-016', 'Assisted Threshold Moderation Procedural Log');
     unlockGate('G6');
     advanceChapter(7);
   };
@@ -132,6 +132,12 @@ export const IlyrThresholdProcedure: React.FC = () => {
           Release the occupant without inventing false consent or surrendering ownership to platform arbitration.
         </p>
       </header>
+
+      {!gameState.flags['p14_solved'] && !gameState.flags['synthetic_footage_proven'] && (
+        <div style={{ padding: 'var(--space-3)', borderLeft: '4px solid var(--accent-warning)', background: 'var(--bg-surface)' }} role="status">
+          <strong>PROCEDURE LOCKED:</strong> Prove the enclosure footage is synthetic using the Pressure + Permission sensor pair before acting on any message attributed to Ilyr.
+        </div>
+      )}
 
       {isSolved && (
         <div style={{ padding: 'var(--space-3)', backgroundColor: 'var(--bg-paper)', border: '1px solid var(--accent-permission)', borderRadius: 'var(--radius-4)' }}>
@@ -198,7 +204,7 @@ export const IlyrThresholdProcedure: React.FC = () => {
                   <BaseButton
                     variant={step.isCorrectProcedure ? 'primary' : 'default'}
                     onClick={() => handleExecuteProcedure(step.id)}
-                    disabled={isSolved}
+                    disabled={isSolved || (!gameState.flags['p14_solved'] && !gameState.flags['synthetic_footage_proven'])}
                   >
                     Execute This Exit Protocol
                   </BaseButton>

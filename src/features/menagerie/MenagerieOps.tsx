@@ -28,6 +28,15 @@ export const MenagerieOps: React.FC = () => {
         </p>
       </header>
 
+      <section className={styles.powerStatusStrip} aria-label="Accumulated choice consequences">
+        <span>ANNEX N RECOGNIZES YOUR HISTORY:</span>
+        <span>
+          Communion: {String(gameState.flags['communion_stance'] || 'UNDECLARED').toUpperCase()} ·
+          Market: {gameState.flags['archive_escrow'] ? ' MEMORY IN ESCROW' : gameState.flags['bond_sacrificed'] ? ' WITNESS BOND LOST' : gameState.flags['memory_prune_refused'] ? ' MODEL INTACT' : ' NO MEMORY TRADE'} ·
+          FIVE_OF_US: {gameState.flags['p05_false_report'] ? ' REPAIR ACCESS RESTRICTED' : gameState.flags['p05_solved'] ? ' AVAILABLE AS WITNESSES' : ' UNRESOLVED'}
+        </span>
+      </section>
+
       {/* Facility Power Status */}
       <section className={styles.powerStatusStrip} aria-label="Facility Power Allocation">
         <span>GLOBAL FACILITY POWER:</span>
