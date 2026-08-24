@@ -31,7 +31,7 @@ export const MobileBottomNav: React.FC = () => {
           `${styles.navItem} ${isActive ? styles.active : ''}`
         }
       >
-        <span className={styles.icon} aria-hidden="true">✉</span>
+        <span className={styles.icon} aria-hidden="true">↘</span>
         <span>Inbox</span>
         <span className={styles.badge} aria-label="1 unread transmission">
           1
@@ -44,7 +44,7 @@ export const MobileBottomNav: React.FC = () => {
           `${styles.navItem} ${isActive ? styles.active : ''}`
         }
       >
-        <span className={styles.icon} aria-hidden="true">☍</span>
+        <span className={styles.icon} aria-hidden="true">◇</span>
         <span>Evidence</span>
       </NavLink>
 
@@ -54,7 +54,7 @@ export const MobileBottomNav: React.FC = () => {
           `${styles.navItem} ${isActive ? styles.active : ''}`
         }
       >
-        <span className={styles.icon} aria-hidden="true">👤</span>
+        <span className={styles.icon} aria-hidden="true">◎</span>
         <span>Profile</span>
       </NavLink>
 
@@ -65,7 +65,7 @@ export const MobileBottomNav: React.FC = () => {
         aria-label="Open Full Network Navigation"
         aria-haspopup="dialog"
       >
-        <span className={styles.icon} aria-hidden="true">☰</span>
+        <span className={styles.icon} aria-hidden="true">≡</span>
         <span>More</span>
       </button>
     </nav>
