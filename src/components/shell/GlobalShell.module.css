@@ -3,7 +3,9 @@
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-  background-color: var(--bg-canvas);
+  background:
+    radial-gradient(circle at 88% 12%, var(--signal-soft), transparent 26rem),
+    var(--bg-canvas);
   color: var(--text-primary);
 }
 
@@ -26,6 +28,6 @@
   width: 100%;
   max-width: var(--shell-max);
   margin: 0 auto;
-  padding: var(--space-4) var(--viewport-gutter);
+  padding: clamp(var(--space-5), 4vw, var(--space-8)) var(--viewport-gutter);
   box-sizing: border-box;
 }
